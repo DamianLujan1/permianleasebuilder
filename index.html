@@ -28,6 +28,8 @@ button kbd{float:right;opacity:.6;font-size:11px;font-family:inherit}
 #tools hr{border:0;border-top:1px solid rgba(255,220,170,.15);margin:2px 0;width:100%}
 body.tools-min .opts{left:70px}
 .opts{position:absolute;top:72px;left:130px;display:none;gap:6px;padding:8px}
+.pipeNote{font-size:12px;line-height:1.45;color:#e9dcc6;padding:2px 6px;max-width:420px}
+.pipeNote .steel{color:#c9d3dc} .pipeNote .flex{color:#ffb347}
 #palette{left:50%;transform:translateX(-50%);bottom:54px;display:none;gap:6px;padding:8px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:min(calc(100vw - 660px),980px)}
 #palette button{display:flex;flex-direction:column;min-width:104px;font-size:12px}
 #palette button span{opacity:.7;font-size:11px}
@@ -157,8 +159,7 @@ body.photo .panel,body.photo #toasts{display:none!important}
   <button id="undo">Undo <kbd>Ctrl+Z</kbd></button>
 </div>
 <div id="pipeOpts" class="panel opts">
-  <button data-mat="1" class="active">Poly (black HDPE)</button>
-  <button data-mat="2">Steel (welded)</button>
+  <span class="pipeNote"><b>Wellhead hookup:</b> first ~90 ft welded <b class="steel">steel</b>, then <b class="flex">flexpipe</b> into the test site<br><b>Bulk line:</b> <b class="flex">flexpipe</b> from the test site to the CTB header</span>
 </div>
 <div id="fillOpts" class="panel opts"><button id="fillAll">Backfill all piped ditch</button></div>
 <div id="checklist" class="panel">
@@ -187,9 +188,9 @@ body.photo .panel,body.photo #toasts{display:none!important}
   <div><span class="k">1–7</span> tools · <span class="k">R</span> rotate equipment · <span class="k">Esc</span> cancel · <span class="k">Ctrl+Z</span> undo · <span class="k">Space</span> pause ops · <span class="k">H</span> help · <span class="k">P</span> photo mode · <span class="k">T</span> hide toolbar</div>
   <ol>
     <li><b>Job board:</b> take a ticket. Each job ties a lease into the one central tank battery (CTB) — or runs it.</li>
-    <li>Wells flow on <b>Christmas trees</b> (no artificial lift). Set a <b>Header</b> (4 slots) inside the CTB fence.</li>
-    <li><b>Dig</b> from each orange flag stake to a tile beside a header. Stay off the caliche pit's flagged setback, power poles &amp; pipeline markers; road and ROW crossings cost 4× / 8×. Longer lines = more backpressure.</li>
-    <li><b>Lay Pipe</b> (poly is cheap, steel for high FTP), <b>Backfill</b>, then set &amp; <b>Connect</b> vessels upstream → downstream. Gas is your call: a <b>Gas Sales Meter</b> on the fence (revenue), a <b>Flare</b> (cheap, $0 gas), or both with the flare as backup. Watch the <b>Build review</b>.</li>
+    <li>Wells flow on <b>Christmas trees</b> (no artificial lift). Set a <b>Test Site</b> out by the pads (6-well test manifold + test separator) and a <b>Header</b> (4 lines) inside the CTB fence.</li>
+    <li><b>Dig</b> from each orange flag stake to a tile beside the test site, then from the test site to a tile beside the header. Keep the pad ditches and the bulk-line ditch from touching. Stay off the caliche pit's flagged setback, power poles &amp; pipeline markers; road and ROW crossings cost 4× / 8×. Longer lines = more backpressure.</li>
+    <li><b>Lay Pipe</b> (first ~90 ft off each wellhead is welded steel, the rest is flexpipe; the bulk line is flexpipe), <b>Backfill</b>, then set &amp; <b>Connect</b> vessels upstream → downstream. Gas is your call: a <b>Gas Sales Meter</b> on the fence (revenue), a <b>Flare</b> (cheap, $0 gas), or both with the flare as backup. Watch the <b>Build review</b>.</li>
     <li><b>Commission</b> → operations: haul trucks, alarms (click the flashing <b>!</b>), then the report card.</li>
   </ol>
 </div>
@@ -3902,7 +3903,7 @@ var xo, xr, Se, yr, Ri, Ty, _r, Re, vr, rf, ri, Je, Qa, lh, Zt, Ge, ae, tl, Ss, 
   Je.forEach((n, t) => {
     n.id = t, n.kind = "tree", n.stubI = n.i, n.stubJ = n.j + n.dir, n.label = `${ri[n.lease].name.replace("LEASE ", "L")} ${n.name}`, n.sour = !!ri[n.lease].sour;
   });
-  Qa = [{ id: "j1", title: "Build the CTB & tie in LEASE 21", lease: "F21", rep: 0, budget: 47e4, pay: 62e3, blurb: "Two new horizontals on LEASE 21 are flowing back to frac tanks. Set the central battery and gather both wells into it. Gas is your call: sell it through a meter on the fence, flare it, or both.", specs: "Moderate water cut (~45%) \xB7 GOR 1,100 \xB7 FTP ~420 psi", obstacles: "Open pasture \u2014 straight shot east to the CTB.", reqs: [] }, { id: "j2", title: "Tie in LEASE 16 (high water cut)", lease: "F16", rep: 5, budget: 3e5, pay: 54e3, blurb: "LEASE 16 #1H & #2H came in wet. Gather them to the CTB from the north and make sure the battery can handle the water.", specs: "Water cut ~76% \xB7 GOR 800 \xB7 FTP ~370 psi", obstacles: "Old caliche pit (no digging) and an overhead power line \u2014 dig between the poles.", reqs: ["ht", "water2"] }, { id: "j3", title: "Tie in LEASE 28 (sour gas)", lease: "F28", rep: 20, budget: 38e4, pay: 78e3, blurb: "Three sour wells south of the lease road. Railroad Commission wants individual well tests now that the CTB is commingling leases.", specs: "H2S ~300 ppm \xB7 GOR 1,600 \xB7 FTP ~950 psi (steel recommended)", obstacles: "Crosses the main lease road (open cut & re-cap, $$).", reqs: ["h2s", "testsep"] }, { id: "j4", title: "Tie in LEASE 22 (high GOR)", lease: "F22", rep: 40, budget: 42e4, pay: 92e3, blurb: "Gassy wells east of the pipeline right-of-way. Flaring that much gas will blow the permit \u2014 the operator wants it sold.", specs: "GOR 3,400 \xB7 FTP ~1,100 psi (steel recommended)", obstacles: "Foreign pipeline ROW (hand-dig / hydro-vac crossing) and the county road.", reqs: ["vru", "vapor", "slots"] }, { id: "j5", title: "LEASE 21 infill + LACT", lease: "F21", rep: 65, budget: 38e4, pay: 115e3, blurb: "Two infill wells on LEASE 21 bring the CTB to 12 wells. Too many haul trucks \u2014 the operator wants a LACT to the crude pipeline.", specs: "Flush production \xB7 FTP ~1,200 psi (steel recommended)", obstacles: "Tie into the existing LEASE 21 ditch corridor.", reqs: ["lact", "slots"] }, { id: "pumper", title: "Pumper relief \u2014 run the CTB 3 days", lease: null, rep: 0, budget: 0, pay: 9e3, repeat: true, blurb: "The regular pumper is off. Run the battery: haul oil, haul water, chase alarms. No construction.", specs: "Whatever you built", obstacles: "\u2014", reqs: [] }], lh = { ht: "Heater treater in the oil path", water2: "2+ water tanks or a transfer pump to SWD", h2s: "H2S monitor at the battery", testsep: "Test separator off the header", vru: "VRT / VRU selling gas", vapor: "Tank vapors piped to the VRU", lact: "LACT unit on the oil tanks", slots: "Enough header slots for every well" }, Zt = (n, t) => t * 120 + n, Ge = (n, t) => n >= 0 && t >= 0 && n < 120 && t < 90, ae = (n, t) => ({ x: (n - 120 / 2 + 0.5) * 2, z: (t - 90 / 2 + 0.5) * 2 }), tl = (n, t) => ({ i: Math.floor(n / 2 + 120 / 2), j: Math.floor(t / 2 + 90 / 2) }), Ss = (n, t, e) => t >= n.i0 && t <= n.i1 && e >= n.j0 && e <= n.j1, ch = (n, t) => Ss(Se, n, t), Gv = ri.F21.pad;
+  Qa = [{ id: "j1", title: "Build the CTB & tie in LEASE 21", lease: "F21", rep: 0, budget: 47e4, pay: 62e3, blurb: "Two new horizontals on LEASE 21 are flowing back to frac tanks. Set the central battery, build a test site out by the pad, and gather both wells through it to the CTB. Gas is your call: sell it through a meter on the fence, flare it, or both.", specs: "Moderate water cut (~45%) \xB7 GOR 1,100 \xB7 FTP ~420 psi", obstacles: "Open pasture \u2014 straight shot east to the CTB.", reqs: [] }, { id: "j2", title: "Tie in LEASE 16 (high water cut)", lease: "F16", rep: 5, budget: 3e5, pay: 54e3, blurb: "LEASE 16 #1H & #2H came in wet. Gather them through a test site to the CTB from the north and make sure the battery can handle the water.", specs: "Water cut ~76% \xB7 GOR 800 \xB7 FTP ~370 psi", obstacles: "Old caliche pit (no digging) and an overhead power line \u2014 dig between the poles.", reqs: ["ht", "water2"] }, { id: "j3", title: "Tie in LEASE 28 (sour gas)", lease: "F28", rep: 20, budget: 38e4, pay: 78e3, blurb: "Three sour wells south of the lease road. Railroad Commission wants individual well tests now that the CTB is commingling leases.", specs: "H2S ~300 ppm \xB7 GOR 1,600 \xB7 FTP ~950 psi", obstacles: "Crosses the main lease road (open cut & re-cap, $$).", reqs: ["h2s", "testsep"] }, { id: "j4", title: "Tie in LEASE 22 (high GOR)", lease: "F22", rep: 40, budget: 42e4, pay: 92e3, blurb: "Gassy wells east of the pipeline right-of-way. Flaring that much gas will blow the permit \u2014 the operator wants it sold.", specs: "GOR 3,400 \xB7 FTP ~1,100 psi", obstacles: "Foreign pipeline ROW (hand-dig / hydro-vac crossing) and the county road.", reqs: ["vru", "vapor", "slots"] }, { id: "j5", title: "LEASE 21 infill + LACT", lease: "F21", rep: 65, budget: 38e4, pay: 115e3, blurb: "Two infill wells on LEASE 21 bring the CTB to 12 wells. Too many haul trucks \u2014 the operator wants a LACT to the crude pipeline.", specs: "Flush production \xB7 FTP ~1,200 psi", obstacles: "Tie into the existing LEASE 21 test site (it has open slots).", reqs: ["lact", "slots"] }, { id: "pumper", title: "Pumper relief \u2014 run the CTB 3 days", lease: null, rep: 0, budget: 0, pay: 9e3, repeat: true, blurb: "The regular pumper is off. Run the battery: haul oil, haul water, chase alarms. No construction.", specs: "Whatever you built", obstacles: "\u2014", reqs: [] }], lh = { ht: "Heater treater in the oil path", water2: "2+ water tanks or a transfer pump to SWD", h2s: "H2S monitor at the battery", testsep: "Individual well tests at a test site", vru: "VRT / VRU selling gas", vapor: "Tank vapors piped to the VRU", lact: "LACT unit on the oil tanks", slots: "Enough test-site & header slots for every line" }, Zt = (n, t) => t * 120 + n, Ge = (n, t) => n >= 0 && t >= 0 && n < 120 && t < 90, ae = (n, t) => ({ x: (n - 120 / 2 + 0.5) * 2, z: (t - 90 / 2 + 0.5) * 2 }), tl = (n, t) => ({ i: Math.floor(n / 2 + 120 / 2), j: Math.floor(t / 2 + 90 / 2) }), Ss = (n, t, e) => t >= n.i0 && t <= n.i1 && e >= n.j0 && e <= n.j1, ch = (n, t) => Ss(Se, n, t), Gv = ri.F21.pad;
   hh = (n, t) => Es(n, t) * 0.5 + Es(n * 2.1 + 5, t * 2.1) * 0.3 + Es(n * 4.3, t * 4.3 + 9) * 0.2;
 });
 function of() {
@@ -4144,8 +4145,8 @@ var L, je, ht, Ay, at, Ft, br, Xv, ge, vo, le, il, lf, cf, hf, an, mh = Vr(() =>
   ht = (n, t, e) => new R(n, t, e), Ay = ht(0, 1, 0);
   at = (n, t, e, i, s, r, a, o) => Oe(new Ti(n, t, e), i, s, r, a, o), Ft = (n, t, e, i, s, r, a, o = 16, l) => Oe(new vn(l ?? n, n, t, o), e, i, s, r, a), br = (n, t, e, i, s, r, a = 12, o = 8) => Oe(new _n(n, a, o), t, e, i, s, r);
   Xv = ht();
-  ge = { header: { name: "Header (4 slots)", cost: 18e3, hours: 6, w: 3, d: 1, port: 0.9, slots: 4, desc: "Production + test header. Takes up to 4 well flow lines; 3-way valves swing any well to the test separator." }, testsep: { name: "Test Separator", cost: 46e3, hours: 8, w: 3, d: 1, port: 1.3, desc: "Separator with its own meter run \u2014 tests one well at a time off the test header." }, scrubber: { name: "Gas Scrubber", cost: 24e3, hours: 5, w: 1, d: 1, port: 1.8, desc: "Knocks liquids out of gas before the VRU / flare / sales." }, sep2: { name: "2-Phase Separator", cost: 38e3, hours: 8, w: 3, d: 1, port: 1.3, desc: "Splits gas from liquid (oil + water emulsion)." }, sep3: { name: "3-Phase Separator", cost: 56e3, hours: 10, w: 4, d: 2, port: 1.6, desc: "Splits gas, oil and water." }, ht: { name: "Heater Treater", cost: 68e3, hours: 10, w: 2, d: 2, port: 2, desc: "Heats emulsion to drop out water. Clean oil to tanks, water to water tank." }, vru: { name: "VRT / VRU", cost: 92e3, hours: 12, w: 3, d: 2, port: 1.5, desc: "Vapor Recovery Tower + Unit: captures low-pressure & tank vapors and sells them instead of flaring." }, oiltank: { name: "Oil Tank (1000 bbl)", cost: 52e3, hours: 8, w: 2, d: 2, port: 1, desc: "1000-bbl welded steel stock tank for sales oil (16 ft shell). Gauge board on the side." }, watertank: { name: "Water Tank (1000 bbl)", cost: 44e3, hours: 8, w: 2, d: 2, port: 1, desc: "1000-bbl fiberglass produced-water tank (16 ft shell)." }, lact: { name: "LACT Unit", cost: 165e3, hours: 14, w: 3, d: 2, port: 0.9, desc: "Lease Automatic Custody Transfer: meters and sells oil to the crude pipeline. BS&W probe diverts off-spec oil back." }, xfer: { name: "Water Transfer Pump", cost: 38e3, hours: 6, w: 2, d: 1, port: 0.7, desc: "Pumps produced water down the SWD line \u2014 no water trucks." }, h2s: { name: "H2S Monitor", cost: 6500, hours: 2, w: 1, d: 1, port: 1, desc: "Fixed H2S sensors, horn and beacon. Required anywhere sour gas is present." }, sales: { name: "Gas Sales Meter", cost: 34e3, hours: 8, w: 3, d: 1, port: 0.9, fence: true, desc: "Orifice meter run + flow computer on the midstream tie-in riser. Set it on the fence line; gas sold earns revenue. Pair it with a flare for upsets & curtailment." }, flare: { name: "Flare Stack", cost: 22e3, hours: 6, w: 1, d: 1, port: 1, desc: "Burns gas that can't be sold. Lights when commissioned." } }, vo = 0.2, le = (n, t, e, i, s = 0.4) => ({ p: [n, t, e], n: i, l: s }), il = { header: { out: { prod: [le(3, 0.9, 0, "+x", 0.3), le(-3, 0.9, 0, "-x", 0.3)], test: [le(0, 0.6, -0.85, "-z", 0.85)] } }, scrubber: { in: [le(0.72, 2, 0, "+x", 0.32)], out: { gas: [le(-0.72, 2.95, 0, "-x", 0.32)] } }, sep2: { in: [le(-2.65, 1.4, 0, "-x", 0.5)], out: { gas: [le(2.65, 1.75, 0, "+x", 0.55)], oil: [le(0.6, 0.5, 0.9, "+z", 0.9)] } }, testsep: { in: [le(-2.65, 1.4, 0, "-x", 0.5)], out: { gas: [le(2.65, 1.75, 0, "+x", 0.55)], oil: [le(0.6, 0.5, 0.9, "+z", 0.9)], water: [le(-0.6, 0.5, 0.9, "+z", 0.9)] } }, sep3: { in: [le(-3.6, 1.9, 0, "-x", 0.5)], out: { gas: [le(3.6, 2.3, 0, "+x", 0.55)], oil: [le(-0.9, 0.45, -1.6, "-z", 1.6)], water: [le(1, 0.45, -1.6, "-z", 1.6)] } }, ht: { in: [le(1.6, 3.2, 0, "+x", 0.45)], out: { gas: [le(0, 5.2, -1.6, "-z", 0.45)], oil: [le(-1.6, 2.4, -0.7, "-x", 0.6)], water: [le(1.6, 1.2, -0.8, "+x", 0.75)] } }, vru: { in: [le(-2.75, 2, 0, "-x", 0.3)], out: { gas: [le(1.2, 0.9, 1.75, "+z", 0.85)] } }, oiltank: { in: [le(1, 4.5, -1.9, "-z", 0.4)], out: { oil: [le(1.9, 0.6, -0.9, "+x", 0.35)], vapor: [le(0.1, 5.8, -2, "-z", 0.25)] }, eq: [le(1.95, 0.6, 0.6, "+x", 0.35), le(-1.95, 0.6, 0.6, "-x", 0.35)] }, watertank: { in: [le(1, 4.5, -1.9, "-z", 0.4)], out: { water: [le(1.9, 0.6, -0.9, "+x", 0.35)], vapor: [le(0.1, 5.8, -2, "-z", 0.25)] }, eq: [le(1.95, 0.6, 0.6, "+x", 0.35), le(-1.95, 0.6, 0.6, "-x", 0.35)] }, lact: { in: [le(-2.95, 0.8, 0.9, "-x", 0.35)] }, xfer: { in: [le(-1.78, 0.6, 0, "-x", 0.1)] }, sales: { in: [le(-2.95, 0.9, 0, "-x", 0.3)] }, flare: { in: [le(-0.95, 0.65, 0.6, "-x", 0.3)] }, h2s: {} }, lf = { "+x": [1, 0], "-x": [-1, 0], "+z": [0, 1], "-z": [0, -1] }, cf = (n) => lf[n.n];
-  hf = ["header", "sep2", "sep3", "testsep", "ht", "scrubber", "vru", "oiltank", "watertank", "xfer", "lact", "sales", "flare", "h2s"], an = {};
+  ge = { header: { name: "Header (4 lines)", cost: 18e3, hours: 6, w: 3, d: 1, port: 0.9, slots: 4, desc: "CTB inlet header. Takes up to 4 incoming lines — normally one flexpipe bulk line from each test site." }, testsite: { name: "Test Site", cost: 98e3, hours: 16, w: 5, d: 3, port: 1.2, slots: 6, site: true, desc: "Well test site, set out by the pads: 6-slot test manifold with 3-way valves, 3-phase test separator and meter run on a gravel pad. Pad flow lines tie into the manifold; one flexpipe bulk line carries the commingled stream to the CTB header." }, testsep: { name: "Test Separator", cost: 46e3, hours: 8, w: 3, d: 1, port: 1.3, desc: "Separator with its own meter run \u2014 tests one well at a time off the test header." }, scrubber: { name: "Gas Scrubber", cost: 24e3, hours: 5, w: 1, d: 1, port: 1.8, desc: "Knocks liquids out of gas before the VRU / flare / sales." }, sep2: { name: "2-Phase Separator", cost: 38e3, hours: 8, w: 3, d: 1, port: 1.3, desc: "Splits gas from liquid (oil + water emulsion)." }, sep3: { name: "3-Phase Separator", cost: 56e3, hours: 10, w: 4, d: 2, port: 1.6, desc: "Splits gas, oil and water." }, ht: { name: "Heater Treater", cost: 68e3, hours: 10, w: 2, d: 2, port: 2, desc: "Heats emulsion to drop out water. Clean oil to tanks, water to water tank." }, vru: { name: "VRT / VRU", cost: 92e3, hours: 12, w: 3, d: 2, port: 1.5, desc: "Vapor Recovery Tower + Unit: captures low-pressure & tank vapors and sells them instead of flaring." }, oiltank: { name: "Oil Tank (1000 bbl)", cost: 52e3, hours: 8, w: 2, d: 2, port: 1, desc: "1000-bbl welded steel stock tank for sales oil (16 ft shell). Gauge board on the side." }, watertank: { name: "Water Tank (1000 bbl)", cost: 44e3, hours: 8, w: 2, d: 2, port: 1, desc: "1000-bbl fiberglass produced-water tank (16 ft shell)." }, lact: { name: "LACT Unit", cost: 165e3, hours: 14, w: 3, d: 2, port: 0.9, desc: "Lease Automatic Custody Transfer: meters and sells oil to the crude pipeline. BS&W probe diverts off-spec oil back." }, xfer: { name: "Water Transfer Pump", cost: 38e3, hours: 6, w: 2, d: 1, port: 0.7, desc: "Pumps produced water down the SWD line \u2014 no water trucks." }, h2s: { name: "H2S Monitor", cost: 6500, hours: 2, w: 1, d: 1, port: 1, desc: "Fixed H2S sensors, horn and beacon. Required anywhere sour gas is present." }, sales: { name: "Gas Sales Meter", cost: 34e3, hours: 8, w: 3, d: 1, port: 0.9, fence: true, desc: "Orifice meter run + flow computer on the midstream tie-in riser. Set it on the fence line; gas sold earns revenue. Pair it with a flare for upsets & curtailment." }, flare: { name: "Flare Stack", cost: 22e3, hours: 6, w: 1, d: 1, port: 1, desc: "Burns gas that can't be sold. Lights when commissioned." } }, vo = 0.2, le = (n, t, e, i, s = 0.4) => ({ p: [n, t, e], n: i, l: s }), il = { header: { out: { prod: [le(3, 0.9, 0, "+x", 0.3), le(-3, 0.9, 0, "-x", 0.3)], test: [le(0, 0.6, -0.85, "-z", 0.85)] } }, scrubber: { in: [le(0.72, 2, 0, "+x", 0.32)], out: { gas: [le(-0.72, 2.95, 0, "-x", 0.32)] } }, sep2: { in: [le(-2.65, 1.4, 0, "-x", 0.5)], out: { gas: [le(2.65, 1.75, 0, "+x", 0.55)], oil: [le(0.6, 0.5, 0.9, "+z", 0.9)] } }, testsep: { in: [le(-2.65, 1.4, 0, "-x", 0.5)], out: { gas: [le(2.65, 1.75, 0, "+x", 0.55)], oil: [le(0.6, 0.5, 0.9, "+z", 0.9)], water: [le(-0.6, 0.5, 0.9, "+z", 0.9)] } }, sep3: { in: [le(-3.6, 1.9, 0, "-x", 0.5)], out: { gas: [le(3.6, 2.3, 0, "+x", 0.55)], oil: [le(-0.9, 0.45, -1.6, "-z", 1.6)], water: [le(1, 0.45, -1.6, "-z", 1.6)] } }, ht: { in: [le(1.6, 3.2, 0, "+x", 0.45)], out: { gas: [le(0, 5.2, -1.6, "-z", 0.45)], oil: [le(-1.6, 2.4, -0.7, "-x", 0.6)], water: [le(1.6, 1.2, -0.8, "+x", 0.75)] } }, vru: { in: [le(-2.75, 2, 0, "-x", 0.3)], out: { gas: [le(1.2, 0.9, 1.75, "+z", 0.85)] } }, oiltank: { in: [le(1, 4.5, -1.9, "-z", 0.4)], out: { oil: [le(1.9, 0.6, -0.9, "+x", 0.35)], vapor: [le(0.1, 5.8, -2, "-z", 0.25)] }, eq: [le(1.95, 0.6, 0.6, "+x", 0.35), le(-1.95, 0.6, 0.6, "-x", 0.35)] }, watertank: { in: [le(1, 4.5, -1.9, "-z", 0.4)], out: { water: [le(1.9, 0.6, -0.9, "+x", 0.35)], vapor: [le(0.1, 5.8, -2, "-z", 0.25)] }, eq: [le(1.95, 0.6, 0.6, "+x", 0.35), le(-1.95, 0.6, 0.6, "-x", 0.35)] }, lact: { in: [le(-2.95, 0.8, 0.9, "-x", 0.35)] }, xfer: { in: [le(-1.78, 0.6, 0, "-x", 0.1)] }, sales: { in: [le(-2.95, 0.9, 0, "-x", 0.3)] }, flare: { in: [le(-0.95, 0.65, 0.6, "-x", 0.3)] }, h2s: {} }, lf = { "+x": [1, 0], "-x": [-1, 0], "+z": [0, 1], "-z": [0, -1] }, cf = (n) => lf[n.n];
+  hf = ["header", "testsite", "sep2", "sep3", "testsep", "ht", "scrubber", "vru", "oiltank", "watertank", "xfer", "lact", "sales", "flare", "h2s"], an = {};
   an.header = () => {
     let n = new jt();
     Sr(n, 5.6, 1.6, 0.2), Bt(ht(-2.7, 0.9, 0), ht(2.7, 0.9, 0), 0.15, L.gray, n, 12);
@@ -4156,6 +4157,26 @@ var L, je, ht, Ay, at, Ft, br, Xv, ge, vo, le, il, lf, cf, hf, an, mh = Vr(() =>
     }
     for (let t of [-1, 1]) at(0.12, 0.7, 0.4, L.dark, t * 2.3, 0.55, 0, n);
     return { group: n };
+  };
+  an.testsite = () => {
+    let n = new jt();
+    at(9.7, 0.1, 5.7, L.concrete, 0, 0.05, 0, n);
+    at(8.8, 0.2, 1.2, L.dark, 0, 0.2, -2.15, n);
+    Bt(ht(-4.2, 0.95, -2.1), ht(4.2, 0.95, -2.1), 0.15, L.gray, n, 12), Bt(ht(-4.2, 1.5, -2.1), ht(4.2, 1.5, -2.1), 0.11, L.gray, n, 12);
+    for (let t of [-1, 1]) br(0.16, L.gray, t * 4.2, 0.95, -2.1, n), br(0.12, L.gray, t * 4.2, 1.5, -2.1, n);
+    for (let t = 0; t < 6; t++) {
+      let e = -3.5 + t * 1.4;
+      Bt(ht(e, 0.1, -2.8), ht(e, 1.22, -2.8), 0.07, L.steel, n), Bt(ht(e, 1.22, -2.8), ht(e, 1.22, -2.1), 0.07, L.steel, n), at(0.26, 0.26, 0.26, L.dark, e, 1.22, -2.45, n), yo(n, e, 1.44, -2.45, "y", 0.12), Bt(ht(e, 1.22, -2.1), ht(e, 0.95, -2.1), 0.06, L.gray, n), Bt(ht(e, 1.22, -2.1), ht(e, 1.5, -2.1), 0.05, L.gray, n);
+    }
+    at(4.3, 0.25, 1.7, L.dark, -1.6, 0.225, 0.9, n), dh(n, 0.6, 3.6, L.tan, 1.25, -1.6, 0.9);
+    for (let t of [-1, 1]) at(0.3, 0.6, 1.1, L.dark, -1.6 + t * 1.3, 0.65, 0.9, n);
+    Bt(ht(-1.6, 1.85, 0.9), ht(-1.6, 2.5, 0.9), 0.06, L.gray, n), Bt(ht(-1.6, 2.5, 0.9), ht(0.4, 2.5, 0.9), 0.06, L.gray, n), Bt(ht(0.4, 2.5, 0.9), ht(0.4, 0.75, 0.9), 0.06, L.gray, n);
+    Bt(ht(-3.9, 1.5, -2.1), ht(-3.9, 1.5, 0.9), 0.08, L.gray, n), Bt(ht(-3.9, 1.5, 0.9), ht(-3.45, 1.5, 0.9), 0.08, L.gray, n);
+    Bt(ht(0.2, 0.75, 0.9), ht(3.3, 0.75, 0.9), 0.07, L.gray, n), Ft(0.12, 0.3, L.steel, 1.4, 0.75, 0.9, n, 12).rotation.z = Math.PI / 2, at(0.5, 0.8, 0.35, L.white, 2.3, 1.45, 1.55, n), Ft(0.035, 1.1, L.gray, 2.3, 0.55, 1.55, n, 6);
+    Bt(ht(3.3, 0.75, 0.9), ht(3.3, 0.75, 2.2), 0.07, L.gray, n), Bt(ht(3.3, 0.75, 2.2), ht(4.4, 0.75, 2.2), 0.07, L.gray, n);
+    Bt(ht(4.2, 0.95, -2.1), ht(4.4, 0.95, -2.1), 0.15, L.gray, n), Bt(ht(4.4, 0.95, -2.1), ht(4.4, 0.95, 2.6), 0.15, L.gray, n), br(0.16, L.gray, 4.4, 0.95, -2.1, n), at(0.32, 0.32, 0.32, L.dark, 4.4, 0.95, 1.4, n), yo(n, 4.4, 1.2, 1.4, "y", 0.14);
+    let s = Er([{ t: "TEST SITE", s: 56 }, { t: "6-WELL TEST MANIFOLD", s: 28 }], 2.4, 1.1);
+    return s.position.set(-3.7, 0, 2.3), n.add(s), { group: n };
   };
   an.scrubber = () => {
     let n = new jt();
@@ -4291,7 +4312,7 @@ function _f(n) {
   }
   let o = new Tn(a, L.dirt, 10800);
   o.castShadow = true, o.receiveShadow = true, o.count = 0, o.frustumCulled = false, n.add(o);
-  let l = new vn(1, 1, 1, 10), c = new Ue({ color: 1842204, roughness: 0.35, metalness: 0.1 }), h = new Ue({ color: 10134443, roughness: 0.3, metalness: 0.85 }), u = [null, new Tn(l, c, 16e3), new Tn(l, h, 16e3)];
+  let l = new vn(1, 1, 1, 10), c = new Ue({ color: 1842204, roughness: 0.35, metalness: 0.1 }), h = new Ue({ color: 10134443, roughness: 0.3, metalness: 0.85 }), u = [null, new Tn(l, c, 16e3), new Tn(l, h, 16e3), new Tn(l, new Ue({ color: 2501166, roughness: 0.55, metalness: 0.12 }), 16e3)];
   u.slice(1).forEach((b) => {
     b.count = 0, b.frustumCulled = false, b.castShadow = true, n.add(b);
   });
@@ -4351,15 +4372,17 @@ function _f(n) {
       let { x: N, z: Lt } = ae(tt, J), ut = y(tt - 1, J) || y(tt + 1, J), Mt = y(tt, J - 1) || y(tt, J + 1), ct = 0.5 + Ne(tt, J) * 0.18;
       ut && !Mt ? (x.set(N, 0, Lt + 1.12), g.set(1.2, ct, 0.42), p.set(0, Ne(J, tt) * 0.2 - 0.1, 0)) : Mt && !ut ? (x.set(N + 1.12, 0, Lt), g.set(0.42, ct, 1.2), p.set(0, Ne(J, tt) * 0.2 - 0.1, 0)) : (x.set(N + 0.9, 0, Lt + 0.9), g.set(0.7, ct * 1.1, 0.7), p.set(0, Ne(tt, J) * 3, 0)), m.setFromEuler(p), f.compose(x, m, g), o.setMatrixAt(o.count++, f);
     }
-    o.instanceMatrix.needsUpdate = true, u[1].count = 0, u[2].count = 0;
-    let bt = -0.95 + 0.17, q = 0.15, nt = (J, tt) => Ge(J, tt) && U[Zt(J, tt)] >= 2, vt = new R(), wt = new R(), At = new R(), Vt = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    o.instanceMatrix.needsUpdate = true, u[1].count = 0, u[2].count = 0, u[3].count = 0;
+    let bt = -0.95 + 0.17, q = 0.15, nt = (J, tt) => Ge(J, tt) && U[Zt(J, tt)] >= 2, vt = new R(), wt = new R(), At = new R(), cplA = new R(), cplB = new R(), Vt = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     for (let J = 0; J < 90; J++) for (let tt = 0; tt < 120; tt++) {
       if (!nt(tt, J)) continue;
       let Tt = Zt(tt, J), N = u[b.mat[Tt] || 1], { x: Lt, z: ut } = ae(tt, J);
       vt.set(Lt, bt, ut);
       let Mt = 0;
-      for (let [ct, zt] of Vt) if (nt(tt + ct, J + zt)) wt.set(Lt + ct * 2 / 2, bt, ut + zt * 2 / 2), _(N, vt, wt, q), Mt++;
-      else if (A.has(Zt(tt + ct, J + zt))) {
+      for (let [ct, zt] of Vt) if (nt(tt + ct, J + zt)) {
+        wt.set(Lt + ct * 2 / 2, bt, ut + zt * 2 / 2), _(N, vt, wt, q), Mt++;
+        b.mat[Tt] === 2 && b.mat[Zt(tt + ct, J + zt)] === 3 && (cplA.set(wt.x - ct * 0.24, bt, wt.z - zt * 0.24), cplB.set(wt.x + ct * 0.24, bt, wt.z + zt * 0.24), _(u[2], cplA, cplB, 0.26));
+      } else if (A.has(Zt(tt + ct, J + zt))) {
         wt.set(Lt + ct * (2 / 2 - 0.1), bt, ut + zt * (2 / 2 - 0.1)), _(N, vt, wt, q), At.set(wt.x, 0.9, wt.z), _(N, wt, At, q);
         let Pt = new R(At.x + ct * 0.35, 0.9, At.z + zt * 0.35);
         _(N, At, Pt, q);
@@ -4382,7 +4405,7 @@ var kv = hp(() => {
   uh();
   mh();
   xf();
-  var Cs = -240 / 2, To = -180 / 2, ns = 6.56, Kn = 72, Rh = 2, ai = 2, kn = 1e3, Py = 16, Ii = { dig: 59, poly: 39, steel: 144, fill: 20, conn: 2400 }, Ir = { dig: 0.12, poly: 0.05, steel: 0.2, fill: 0.04, conn: 2 }, Ct = (n) => document.querySelector(n), Le = (n) => "$" + Math.round(n).toLocaleString("en-US"), fi = new co({ antialias: true, preserveDrawingBuffer: true });
+  var Cs = -240 / 2, To = -180 / 2, ns = 6.56, Kn = 72, Rh = 2, ai = 2, kn = 1e3, Py = 16, Ii = { dig: 59, poly: 39, steel: 144, flex: 98, fill: 20, conn: 2400 }, Ir = { dig: 0.12, poly: 0.05, steel: 0.2, flex: 0.07, fill: 0.04, conn: 2 }, tsSteelTiles = 14, Ct = (n) => document.querySelector(n), Le = (n) => "$" + Math.round(n).toLocaleString("en-US"), fi = new co({ antialias: true, preserveDrawingBuffer: true });
   fi.setPixelRatio(Math.min(devicePixelRatio, 2));
   fi.setSize(innerWidth, innerHeight);
   fi.shadowMap.enabled = true;
@@ -4615,7 +4638,7 @@ var kv = hp(() => {
   Ao.wrapS = Ao.wrapT = io;
   Ao.colorSpace = xn;
   for (let n of Object.values(kr)) n.mat = new Ue({ color: n.color, roughness: 0.45, metalness: 0.4 }), n.flow = new Ue({ color: n.color, roughness: 0.45, metalness: 0.4, emissive: n.glow, emissiveMap: Ao, emissiveIntensity: 1.6 });
-  var ky = { header: { sep2: "prod", sep3: "prod", ht: "prod", testsep: "test" }, sep2: { ht: "oil", scrubber: "gas", oiltank: "oil", flare: "gas", vru: "gas", sales: "gas" }, sep3: { ht: "oil", scrubber: "gas", watertank: "water", oiltank: "oil", flare: "gas", vru: "gas", sales: "gas" }, testsep: { ht: "oil", oiltank: "oil", watertank: "water", scrubber: "gas", flare: "gas", vru: "gas", sales: "gas" }, ht: { oiltank: "oil", watertank: "water", scrubber: "gas", vru: "gas", flare: "gas", sales: "gas" }, scrubber: { vru: "gas", flare: "gas", sales: "gas" }, vru: { flare: "gas", sales: "gas" }, oiltank: { vru: "vapor", oiltank: "oil", flare: "vapor", lact: "oil" }, watertank: { watertank: "water", vru: "vapor", xfer: "water" }, flare: {}, lact: {}, xfer: {}, h2s: {}, sales: {} }, xh = { "sep2>watertank": "A 2-phase separator only splits gas from liquid. Use a 3-phase separator, or send liquids to the Heater Treater to drop the water.", "header>oiltank": "Raw production straight to a stock tank? Run it through a separator first.", "header>watertank": "Production needs separating first \u2014 header \u2192 separator.", "header>flare": "Don't flare the whole well stream! Header \u2192 separator.", "header>lact": "The LACT takes clean oil from the stock tanks, not raw production.", "flare>*": "The flare is the end of the line \u2014 nothing comes out of it but fire.", "lact>*": "The LACT pumps sales oil down the crude pipeline \u2014 that's the end of the line on the lease.", "sales>*": "The sales meter is the custody-transfer point \u2014 gas goes down the midstream line from here.", "header>sales": "Separate it first \u2014 only dry gas off a separator (through the scrubber) goes to the sales meter.", "oiltank>sales": "Tank vapors are too low-pressure for the sales line \u2014 send them to the VRU, and the VRU into sales.", "xfer>*": "The transfer pump sends water down the SWD line \u2014 nothing else connects downstream.", "h2s>*": "The H2S monitor is a sensor and alarm \u2014 no process piping.", "*>h2s": "The H2S monitor is a sensor and alarm \u2014 no process piping." };
+  var ky = { header: { sep2: "prod", sep3: "prod", ht: "prod", testsep: "test" }, sep2: { ht: "oil", scrubber: "gas", oiltank: "oil", flare: "gas", vru: "gas", sales: "gas" }, sep3: { ht: "oil", scrubber: "gas", watertank: "water", oiltank: "oil", flare: "gas", vru: "gas", sales: "gas" }, testsep: { ht: "oil", oiltank: "oil", watertank: "water", scrubber: "gas", flare: "gas", vru: "gas", sales: "gas" }, ht: { oiltank: "oil", watertank: "water", scrubber: "gas", vru: "gas", flare: "gas", sales: "gas" }, scrubber: { vru: "gas", flare: "gas", sales: "gas" }, vru: { flare: "gas", sales: "gas" }, oiltank: { vru: "vapor", oiltank: "oil", flare: "vapor", lact: "oil" }, watertank: { watertank: "water", vru: "vapor", xfer: "water" }, flare: {}, lact: {}, xfer: {}, h2s: {}, sales: {} }, xh = { "testsite>*": "The test site ties into the CTB header through a buried flexpipe bulk line — dig from a tile beside the test site to a tile beside the header, then Lay Pipe.", "*>testsite": "Pad flow lines run into the test site through ditches — dig from each wellhead flag stake to a tile beside it, then Lay Pipe.", "sep2>watertank": "A 2-phase separator only splits gas from liquid. Use a 3-phase separator, or send liquids to the Heater Treater to drop the water.", "header>oiltank": "Raw production straight to a stock tank? Run it through a separator first.", "header>watertank": "Production needs separating first \u2014 header \u2192 separator.", "header>flare": "Don't flare the whole well stream! Header \u2192 separator.", "header>lact": "The LACT takes clean oil from the stock tanks, not raw production.", "flare>*": "The flare is the end of the line \u2014 nothing comes out of it but fire.", "lact>*": "The LACT pumps sales oil down the crude pipeline \u2014 that's the end of the line on the lease.", "sales>*": "The sales meter is the custody-transfer point \u2014 gas goes down the midstream line from here.", "header>sales": "Separate it first \u2014 only dry gas off a separator (through the scrubber) goes to the sales meter.", "oiltank>sales": "Tank vapors are too low-pressure for the sales line \u2014 send them to the VRU, and the VRU into sales.", "xfer>*": "The transfer pump sends water down the SWD line \u2014 nothing else connects downstream.", "h2s>*": "The H2S monitor is a sensor and alarm \u2014 no process piping.", "*>h2s": "The H2S monitor is a sensor and alarm \u2014 no process piping." };
   function Nf(n) {
     let t = sl(n.type), e = is(n);
     t.group.position.set(e.x, 0, e.z), t.group.rotation.y = n.rot * Math.PI / 2, t.group.userData.pick = { kind: "equip", id: n.id }, Xt.add(t.group), Ls.set(n.id, { ...t, rec: n, level: 0.12 });
@@ -4737,9 +4760,9 @@ var kv = hp(() => {
     for (let t of H.equip) t.type === "header" && Dr(t).forEach((e) => n.add(Zt(e.i, e.j)));
     return n;
   }
-  var pl = null, ml = /* @__PURE__ */ new Map();
+  var pl = null, ml = /* @__PURE__ */ new Map(), tsCache = null, tsWellCache = /* @__PURE__ */ new Map(), tsBulkCache = /* @__PURE__ */ new Map();
   function Eh() {
-    pl = null, ml.clear();
+    pl = null, ml.clear(), tsCache = null, tsWellCache.clear(), tsBulkCache.clear();
   }
   function Dh() {
     if (pl) return pl;
@@ -4764,7 +4787,7 @@ var kv = hp(() => {
   function Rn() {
     Oi = /* @__PURE__ */ new Map();
     for (let n of H.equip) for (let t of Dr(n)) Oi.set(Zt(t.i, t.j), n.id);
-    Eh(), Ly.rebuild(H, Ih()), Ny(), Br(), _v(), Us();
+    Eh(), Ly.rebuild(H, tsRiserTiles()), Ny(), Br(), _v(), Us();
   }
   function Bf(n, t) {
     let e = t === zf ? n : null;
@@ -4795,7 +4818,110 @@ var kv = hp(() => {
     }
     return null;
   }
-  var zf = (n) => H.tiles[n] >= 2, jy = (n) => H.tiles[n] >= 1, di = (n) => Bf(Zt(n.stubI, n.stubJ), zf), El = (n) => !!di(n);
+  var tsN4 = [[1, 0], [-1, 0], [0, 1], [0, -1]], tsPiped = (k) => H.tiles[k] >= 2;
+  function tsRiserTiles() {
+    let s = Ih();
+    for (let q of H.equip) q.type === "testsite" && Dr(q).forEach((a) => s.add(Zt(a.i, a.j)));
+    return s;
+  }
+  function tsInfo() {
+    if (tsCache) return tsCache;
+    let hdr = Dh(), ports = /* @__PURE__ */ new Map(), stubs = /* @__PURE__ */ new Map();
+    for (let q of H.equip) {
+      if (q.type !== "testsite") continue;
+      let foot = new Set(Dr(q).map((a) => Zt(a.i, a.j)));
+      for (let a of Dr(q)) for (let [dx, dz] of tsN4) {
+        let ni = a.i + dx, nj = a.j + dz, k = Zt(ni, nj);
+        if (!Ge(ni, nj) || foot.has(k)) continue;
+        ports.has(k) ? ports.get(k).includes(q.id) || ports.get(k).push(q.id) : ports.set(k, [q.id]);
+      }
+    }
+    for (let w of Je) stubs.set(Zt(w.stubI, w.stubJ), w);
+    let comp = new Int32Array(10800).fill(-1), info = [];
+    for (let k = 0; k < 10800; k++) {
+      if (H.tiles[k] < 2 || comp[k] >= 0) continue;
+      let c = info.length, f = { header: false, wells: [], sites: /* @__PURE__ */ new Set() }, q = [k];
+      info.push(f), comp[k] = c;
+      for (; q.length; ) {
+        let x = q.pop(), xi = x % 120, xj = Math.floor(x / 120);
+        hdr.has(x) && (f.header = true), stubs.has(x) && f.wells.push(stubs.get(x)), ports.has(x) && ports.get(x).forEach((id) => f.sites.add(id));
+        for (let [dx, dz] of tsN4) {
+          let ni = xi + dx, nj = xj + dz;
+          if (!Ge(ni, nj)) continue;
+          let y = Zt(ni, nj);
+          H.tiles[y] >= 2 && comp[y] < 0 && (comp[y] = c, q.push(y));
+        }
+      }
+    }
+    return tsCache = { hdr, ports, stubs, comp, info };
+  }
+  function tsBfs(src, ok, goal) {
+    let prev = new Int32Array(10800).fill(-2), q = [];
+    for (let s of src) ok(s) && prev[s] === -2 && (prev[s] = -1, q.push(s));
+    for (let h = 0; h < q.length; h++) {
+      let a = q[h];
+      if (goal(a)) {
+        let p = [];
+        for (let x = a; x !== -1; x = prev[x]) p.push(x);
+        return p.reverse();
+      }
+      let ai = a % 120, aj = Math.floor(a / 120);
+      for (let [dx, dz] of tsN4) {
+        let ni = ai + dx, nj = aj + dz;
+        if (!Ge(ni, nj)) continue;
+        let y = Zt(ni, nj);
+        prev[y] === -2 && ok(y) && (prev[y] = a, q.push(y));
+      }
+    }
+    return null;
+  }
+  function tsBulk(id) {
+    if (tsBulkCache.has(id)) return tsBulkCache.get(id);
+    let T = tsInfo(), src = [];
+    for (let [k, ids] of T.ports) {
+      if (!ids.includes(id) || H.tiles[k] < 2) continue;
+      let f = T.info[T.comp[k]];
+      f.header && !f.wells.length && src.push(k);
+    }
+    let p = src.length ? tsBfs(src, tsPiped, (k) => T.hdr.has(k)) : null;
+    return tsBulkCache.set(id, p), p;
+  }
+  function tsWell(w) {
+    if (tsWellCache.has(w.id)) return tsWellCache.get(w.id);
+    let T = tsInfo(), s = Zt(w.stubI, w.stubJ), r;
+    if (H.tiles[s] < 2) r = { ok: false, why: "open", site: null };
+    else {
+      let f = T.info[T.comp[s]];
+      if (f.header) {
+        let p = Me.done[w.job] && Ee?.id !== w.job ? tsBfs([s], tsPiped, (k) => T.hdr.has(k)) : null;
+        r = p ? { ok: true, legacy: true, site: null, flow: p, bulk: [], path: p } : { ok: false, why: "bypass", site: null };
+      } else if (!f.sites.size) r = { ok: false, why: "open", site: null };
+      else {
+        let flow = tsBfs([s], tsPiped, (k) => T.ports.has(k)), site = T.ports.get(flow[flow.length - 1])[0], bulk = tsBulk(site);
+        r = bulk ? { ok: true, site, flow, bulk, path: flow.concat(bulk) } : { ok: false, why: "site", site, flow };
+      }
+    }
+    return tsWellCache.set(w.id, r), r;
+  }
+  var tsLineKey = (w) => {
+    let r = tsWell(w);
+    return r.site != null ? "s" + r.site : "w" + w.id;
+  };
+  function tsPlaceWhy(i, j, site) {
+    if (!Ge(i, j)) return "Off the edge of the lease.";
+    if (!site) return ch(i, j) ? "" : "Equipment must sit inside the fenced battery pad.";
+    if (ch(i, j)) return "The test site goes outside the battery fence, out by the pads.";
+    let k = Zt(i, j), ty = Mr(i, j);
+    if (ty === "road") return "Not on the lease road.";
+    if (ty === "row") return "Not in the pipeline right-of-way.";
+    if (ty === "pit") return "Not in the caliche pit.";
+    if (Pf.has(k) || Je.some((w) => Zt(w.stubI, w.stubJ) === k)) return "Leave the wellhead and its flow-line stake clear.";
+    return Bn.has(k) ? `${Bn.get(k)} — can't set the test site here.` : "";
+  }
+  var zf = (n) => H.tiles[n] >= 2, jy = (n) => H.tiles[n] >= 1, di = (n) => {
+    let t = tsWell(n);
+    return t.ok ? t.path : null;
+  }, El = (n) => !!di(n);
   function Zy(n) {
     let t = di(n);
     if (!t) return null;
@@ -4870,9 +4996,9 @@ var kv = hp(() => {
     t.i = n.i - Math.floor((e - 1) / 2), t.j = n.j - Math.floor((i - 1) / 2);
     let s = true, r = "";
     for (let a of Dr(t)) {
-      let o = Zt(a.i, a.j);
-      if (!Ge(a.i, a.j) || !ch(a.i, a.j)) {
-        s = false, r = "Equipment must sit inside the fenced battery pad.";
+      let o = Zt(a.i, a.j), bad = tsPlaceWhy(a.i, a.j, ge[hi].site);
+      if (bad) {
+        s = false, r = bad;
         break;
       }
       if (Oi.has(o) && Oi.get(o) !== es) {
@@ -4888,7 +5014,7 @@ var kv = hp(() => {
   }
   function ss(n) {
     (ui || Fe !== "build") && n !== "camera" && ((Fe === "build" || ui) && qt('Battery is online. Hit "Shut In" to keep building.', "warn"), n = "camera"), xe = n, Nn = null, es = null, ts.visible = false, Ni.visible = false, We.mouseButtons.LEFT = n === "camera" ? Dn.ROTATE : null, document.querySelectorAll("[data-tool]").forEach((e) => e.classList.toggle("active", e.dataset.tool === n)), Ct("#pipeOpts").style.display = n === "pipe" ? "flex" : "none", Ct("#fillOpts").style.display = n === "backfill" ? "flex" : "none", Ct("#palette").style.display = n === "build" ? "flex" : "none";
-    let t = { camera: "Drag to orbit \xB7 right-drag orbit \xB7 middle/shift+right-drag pan \xB7 wheel zoom \xB7 WASD pan", dig: "Click-drag to mark trench tiles. The backhoe digs them in order. Start at an orange flag stake.", pipe: "Click a well (or its ditch) to string flow line through the ditch to the header.", backfill: "Click-drag over ditch to backfill. Piped ditch gets covered; empty ditch is filled back in.", build: "Click inside the battery fence to set equipment \xB7 R rotates (hover a set vessel + R turns it in place) \xB7 M picks a set vessel up to move it \xB7 Esc cancels", connect: "Click the upstream vessel, then the downstream one, to run a line between them.", delete: "Click equipment or a battery line to remove it (refunded). Click ditch to fill/pull pipe." };
+    let t = { camera: "Drag to orbit \xB7 right-drag orbit \xB7 middle/shift+right-drag pan \xB7 wheel zoom \xB7 WASD pan", dig: "Click-drag to mark trench tiles. The backhoe digs them in order. Start at an orange flag stake.", pipe: "Click a well (or its ditch) to string flow line into the test site — first ~90 ft welded steel off the wellhead, then flexpipe. Click the test site (or its ditch) to run the flexpipe bulk line to the CTB header.", backfill: "Click-drag over ditch to backfill. Piped ditch gets covered; empty ditch is filled back in.", build: "Click inside the battery fence to set equipment (the Test Site goes outside, out by the pads) \xB7 R rotates (hover a set vessel + R turns it in place) \xB7 M picks a set vessel up to move it \xB7 Esc cancels", connect: "Click the upstream vessel, then the downstream one, to run a line between them.", delete: "Click equipment or a battery line to remove it (refunded). Click ditch to fill/pull pipe." };
     Ct("#hint").textContent = t[n] || "", wl();
   }
   function Oh(n) {
@@ -4970,10 +5096,13 @@ var kv = hp(() => {
     if (de && (xe === "camera" || xe === "delete" || xe === "connect" || xe === "pipe")) {
       if ((de.kind !== "well" || xe === "pipe" || xe === "camera") && (Lr.setFromObject(de.obj), Lr.visible = true, Lr.material.color.set(xe === "delete" ? 16729156 : 16777215)), de.kind === "equip") {
         let e = we(de.id), i = ge[e.type];
-        t = `<b>${i.name}</b><br>${i.desc}<br><span class="dim">${Le(i.cost)}</span>`;
+        if (t = `<b>${i.name}</b><br>${i.desc}<br><span class="dim">${Le(i.cost)}</span>`, e.type === "testsite") {
+          let c = ci().filter((h) => tsWell(h).site === e.id).length, b = tsBulk(e.id);
+          t += `<br>Wells on the manifold: <b>${c}/${i.slots}</b> \xB7 Bulk line: ${b ? `<span class="ok">tied to the CTB \xB7 ${Math.round(b.length * ns).toLocaleString()} ft</span>` : '<span class="bad">not tied to the CTB yet</span>'}`;
+        }
       } else if (de.kind === "well") {
-        let e = Je[de.id], i = El(e);
-        t = `<b>${ri[e.lease].name} ${e.name}</b> \xB7 flowing on a Christmas tree${e.sour ? ' \xB7 <span class="bad">sour (H2S)</span>' : ""}<br>${e.bopd} BOPD \xB7 ${e.bwpd} BWPD \xB7 GOR ${e.gor.toLocaleString()} \xB7 FTP ${e.ftp} psi<br>Flow line: ${i ? `<span class="ok">tied in</span> \xB7 ${Math.round(Uh(e)).toLocaleString()} ft \xB7 ~${Ky(e)} psi drop \xB7 ${Math.round(Ro(e) * 100)}% rate` : '<span class="bad">not tied in</span>'}`;
+        let e = Je[de.id], i = El(e), c = tsWell(e), h = (f) => Math.round(f * ns).toLocaleString(), u = c.flow || [];
+        t = `<b>${ri[e.lease].name} ${e.name}</b> \xB7 flowing on a Christmas tree${e.sour ? ' \xB7 <span class="bad">sour (H2S)</span>' : ""}<br>${e.bopd} BOPD \xB7 ${e.bwpd} BWPD \xB7 GOR ${e.gor.toLocaleString()} \xB7 FTP ${e.ftp} psi<br>Flow line: ${i ? `${c.legacy ? `<span class="ok">tied in</span> direct to the CTB (built before test sites) \xB7 ${h(u.length)} ft` : `<span class="ok">tied in via test site</span> \xB7 ${h(u.length)} ft (${h(u.filter((f) => H.mat[f] === 2).length)} ft steel + ${h(u.filter((f) => H.mat[f] === 3).length)} ft flex) \xB7 bulk line ${h(c.bulk.length)} ft`} \xB7 ~${Ky(e)} psi drop \xB7 ${Math.round(Ro(e) * 100)}% rate` : c.why === "bypass" ? '<span class="bad">runs straight to the CTB header — it has to go through a test site</span>' : c.why === "site" ? `into the test site (${h(u.length)} ft) \xB7 <span class="bad">test site has no bulk line to the CTB yet</span>` : '<span class="bad">not tied in</span>'}`;
       } else if (de.kind === "conn") {
         let e = H.conns.find((i) => i.id === de.id);
         e && (t = `<b>${kr[e.stream].name} line</b>${Vy(e) ? ' \xB7 <span class="dim">buried</span>' : ""}<br>${ge[we(e.from).type].name} \u2192 ${ge[we(e.to).type].name}`);
@@ -4989,9 +5118,10 @@ var kv = hp(() => {
     t ? (n.innerHTML = t, n.style.display = "block", n.style.left = Vf + 16 + "px", n.style.top = Gf + 14 + "px") : n.style.display = "none";
   }
   function sv() {
-    if (!Ih().size) return qt("Set a Header in the battery first (Build \u2192 Header). Flow lines tie into it.", "warn");
-    let n = [];
-    if (Eh(), de && de.kind === "well") n = [Je[de.id]];
+    Eh();
+    let T = tsInfo(), n = [], z = [], loud = false;
+    if (de && de.kind === "well") n = [Je[de.id]];
+    else if (de && de.kind === "equip" && we(de.id)?.type === "testsite") z = [de.id], loud = true;
     else if (ce && H.tiles[Zt(ce.i, ce.j)] >= 1) {
       let s = Zt(ce.i, ce.j), r = /* @__PURE__ */ new Set([s]), a = [s];
       for (; a.length; ) {
@@ -5003,24 +5133,63 @@ var kv = hp(() => {
           !r.has(g) && H.tiles[g] >= 1 && (r.add(g), a.push(g));
         }
       }
-      if (n = ci().filter((o) => r.has(Zt(o.stubI, o.stubJ))), !n.length) return qt("That ditch isn't connected to any well's flow-line stub yet.", "warn");
-    } else return qt("Click a well or a dug ditch.", "info");
-    let t = 0, e = 0, i = [];
+      if (n = ci().filter((o) => r.has(Zt(o.stubI, o.stubJ))), z = Yn([...r].flatMap((o) => T.ports.get(o) || [])), !n.length && !z.length) return qt("That ditch doesn't reach a well's flag stake or a test site yet.", "warn");
+      loud = !n.length;
+    } else return qt("Click a well, the test site, or a dug ditch.", "info");
+    if (n.length && !H.equip.some((o) => o.type === "testsite")) return qt("Set a Test Site first (Build → Test Site, out by the pads). Pad flow lines tie into it.", "warn");
+    if (loud && !Ih().size) return qt("Set a Header in the battery first (Build → Header). The test site's bulk line ties into it.", "warn");
+    let e = 0, i = [], st = 0, fx = 0, bk = 0, nb = [], dist = new Int32Array(10800).fill(-1), q = [], lay = (o, l) => {
+      H.tiles[o] = 2, H.mat[o] = l, H.cost += l === 2 ? Ii.steel : Ii.flex, H.hours += l === 2 ? Ir.steel : Ir.flex;
+    };
+    for (let o of ci()) {
+      let l = Zt(o.stubI, o.stubJ);
+      H.tiles[l] >= 1 && dist[l] < 0 && (dist[l] = 0, q.push(l));
+    }
+    for (let o = 0; o < q.length; o++) {
+      let l = q[o];
+      if (dist[l] >= tsSteelTiles - 1) continue;
+      for (let [c, h] of tsN4) {
+        let f = l % 120 + c, m = Math.floor(l / 120) + h, g = Zt(f, m);
+        Ge(f, m) && H.tiles[g] >= 1 && dist[g] < 0 && !T.hdr.has(g) && (dist[g] = dist[l] + 1, q.push(g));
+      }
+    }
     Ui();
     for (let s of n) {
       if (El(s)) {
         e++;
         continue;
       }
-      let r = Bf(Zt(s.stubI, s.stubJ), jy);
+      T = tsInfo();
+      let r = tsBfs([Zt(s.stubI, s.stubJ)], (o) => H.tiles[o] >= 1 && !T.hdr.has(o) && !(H.tiles[o] >= 2 && T.info[T.comp[o]].header), (o) => T.ports.has(o));
       if (!r) {
         i.push(s.label);
         continue;
       }
-      for (let a of r) H.tiles[a] === 1 && (H.tiles[a] = 2, H.mat[a] = Mo, t++, H.cost += Mo === 1 ? Ii.poly : Ii.steel, H.hours += Mo === 1 ? Ir.poly : Ir.steel);
+      for (let o of r) {
+        if (H.tiles[o] !== 1) continue;
+        let l = dist[o] >= 0 && dist[o] < tsSteelTiles ? 2 : 3;
+        lay(o, l), l === 2 ? st++ : fx++;
+      }
+      T.ports.get(r[r.length - 1]).forEach((o) => z.includes(o) || z.push(o)), Eh();
+    }
+    for (let s of z) {
+      if (!Ih().size || tsBulk(s)) continue;
+      T = tsInfo();
+      let r = tsBfs([...T.ports.keys()].filter((o) => T.ports.get(o).includes(s)), (o) => H.tiles[o] >= 1 && !T.stubs.has(o) && !(H.tiles[o] >= 2 && T.info[T.comp[o]].wells.length), (o) => T.hdr.has(o));
+      if (!r) {
+        nb.push(s);
+        continue;
+      }
+      for (let o of r) H.tiles[o] === 1 && (lay(o, 3), bk++);
       Eh();
     }
-    t || Di.pop(), Rn(), t && qt(`Strung ${Math.round(t * ns)} ft of ${Mo === 1 ? "poly" : "steel"} flow line. Backfill it when you're done.`, "ok"), i.length ? qt(`Ditch from ${i.join(", ")} doesn't reach the header yet. Keep digging to a tile right beside the header.`, "warn") : !t && e && qt("Already tied in.", "info");
+    let a = st + fx + bk, ft = (o) => Math.round(o * ns).toLocaleString();
+    a || Di.pop(), Rn();
+    st + fx && qt(`Strung ${ft(st + fx)} ft of flow line into the test site: ${ft(st)} ft welded steel off the wellhead, ${ft(fx)} ft flexpipe.${bk ? "" : " Backfill it when you're done."}`, "ok");
+    bk && qt(`Ran ${ft(bk)} ft of flexpipe bulk line from the test site to the CTB header. Backfill it when you're done.`, "ok");
+    i.length && qt(`Ditch from ${i.join(", ")} doesn't reach the test site yet. Keep digging to a tile right beside the test site (stay clear of the header).`, "warn");
+    nb.length ? loud ? qt("The bulk-line ditch doesn't reach the CTB header yet. Dig from a tile beside the test site to a tile right beside a header.", "warn") : qt("Next: dig a bulk-line ditch from the test site to a tile beside the CTB header, then Lay Pipe on it.", "info") : z.length && !Ih().size ? qt("Next: set a Header in the battery, then run the test site's bulk line to it.", "info") : loud && !a && qt("That test site's bulk line is already tied to the CTB.", "info");
+    !a && !i.length && !nb.length && e && qt("Already tied in.", "info"), Tl();
   }
   function rv() {
     if (!ce) return;
@@ -5040,7 +5209,8 @@ var kv = hp(() => {
     s.i = Math.round(e - r.w / 2), s.j = Math.round(i - r.d / 2);
     for (let a of Dr(s)) {
       let o = Zt(a.i, a.j);
-      if (!Ge(a.i, a.j) || !ch(a.i, a.j)) return qt("No room to turn it \u2014 it would stick out past the battery fence.", "warn");
+      let bad = tsPlaceWhy(a.i, a.j, ge[n.type].site);
+      if (bad) return qt(ge[n.type].site ? `No room to turn it \u2014 ${bad}` : "No room to turn it \u2014 it would stick out past the battery fence.", "warn");
       if (Oi.has(o) && Oi.get(o) !== n.id) return qt("No room to turn it \u2014 something is in the way.", "warn");
       if (H.tiles[o] !== 0) return qt("No room to turn it \u2014 there's a ditch there.", "warn");
     }
@@ -5194,14 +5364,21 @@ var kv = hp(() => {
     return { dump: s(e.dump), hatch: s(e.hatch), hatchVapor: s(3e-3), pilot: s(e.pilot), curtail: s(e.curtail) };
   }
   function Fh() {
-    let n = [], t = (O, j, Y, Z = false) => n.push({ ok: O, label: j, hint: Y, warn: Z }), e = (O) => H.equip.filter((j) => O.includes(j.type)), i = (O, j) => H.conns.filter((Y) => Y.from === O.id).map((Y) => we(Y.to)).filter((Y) => Y && j.includes(Y.type)), s = ci(), r = e(["header"]);
-    t(r.length > 0, "Header set in the battery", "Build \u2192 Header (4 slots)");
+    let n = [], t = (O, j, Y, Z = false) => n.push({ ok: O, label: j, hint: Y, warn: Z }), e = (O) => H.equip.filter((j) => O.includes(j.type)), i = (O, j) => H.conns.filter((Y) => Y.from === O.id).map((Y) => we(Y.to)).filter((Y) => Y && j.includes(Y.type)), s = ci(), r = e(["header"]), tsS = e(["testsite"]);
+    t(r.length > 0, "Header set in the battery", "Build \u2192 Header (4 lines)");
+    s.some((Z) => !tsWell(Z).legacy) && t(tsS.length > 0, "Test site set out by the pads", "Build \u2192 Test Site, on open ground outside the battery fence");
     for (let O of Yn(s.map((j) => j.lease))) {
-      let j = s.filter((Z) => Z.lease === O), Y = j.filter((Z) => r.length && El(Z));
-      t(Y.length === j.length, `${ri[O].name}: ${Y.length}/${j.length} wells tied to a header`, `Dig from each orange flag stake on ${ri[O].name} to a tile beside a header, then Lay Pipe`);
+      let j = s.filter((Z) => Z.lease === O), Y = j.filter((Z) => r.length && El(Z)), Zb = j.find((Z) => !Y.includes(Z)), why = Zb ? tsWell(Zb).why : "", nm = ri[O].name;
+      t(Y.length === j.length, `${nm}: ${Y.length}/${j.length} wells tied in${j.every((Z) => tsWell(Z).legacy) ? " (direct, built before test sites)" : " through a test site"}`, !tsS.length ? `Build \u2192 Test Site near ${nm}, outside the battery fence` : why === "bypass" ? `A ${nm} flow line runs straight to the CTB header \u2014 pad lines must go into the test site. Keep the flow-line ditch and the bulk-line ditch apart` : why === "site" ? r.length ? "Dig a bulk-line ditch from the test site to a tile beside the CTB header, then Lay Pipe on it" : "Build \u2192 Header in the battery, then run the test site's bulk line to it" : `Dig from each orange flag stake on ${nm} to a tile beside the test site, then Lay Pipe`);
     }
-    let a = Jy(), o = [...a.entries()].filter(([, O]) => O.length > ge.header.slots);
-    t(!o.length, `Header slots: max ${ge.header.slots} wells per header`, o.length ? `One header has ${o[0][1].length} wells on it \u2014 set another Header and run a lease's line to it` : "");
+    let a = Jy(), o = [...a.entries()].filter(([, O]) => Yn(O.map(tsLineKey)).length > ge.header.slots), tsW = /* @__PURE__ */ new Map();
+    for (let Z of s) {
+      let j = tsWell(Z);
+      j.ok && j.site != null && (tsW.has(j.site) || tsW.set(j.site, []), tsW.get(j.site).push(Z));
+    }
+    let tsO = [...tsW.entries()].filter(([, O]) => O.length > ge.testsite.slots);
+    tsS.length && t(!tsO.length, `Test site slots: max ${ge.testsite.slots} wells per test site`, tsO.length ? `One test site has ${tsO[0][1].length} wells on it \u2014 set another Test Site for the extra wells` : "");
+    t(!o.length, `Header slots: max ${ge.header.slots} lines per header`, o.length ? `One header has ${Yn(o[0][1].map(tsLineKey)).length} lines on it \u2014 set another Header and run a bulk line to it` : "");
     let l = 0, c = 0;
     for (let O = 0; O < H.tiles.length; O++) H.tiles[O] === 2 && c++, H.tiles[O] === 1 && l++;
     t(c === 0 && l === 0, "Ditches backfilled (no open trench)", `${c + l} tile(s) still open \u2014 use Backfill`);
@@ -5213,7 +5390,7 @@ var kv = hp(() => {
     t(b !== "none", "Gas outlet: Sales Meter and/or Flare", "Your call: separator gas (through the Scrubber) \u2192 Gas Sales Meter on the fence, \u2192 Flare, or both (sales + flare backup)");
     let A = [...f.filter((O) => O.type === "sep3"), ...m, ...g], U = Yn(A.flatMap((O) => i(O, ["watertank"])));
     t(U.length > 0, "Water \u2192 Water Tank", "Connect the Heater Treater (or 3-phase sep) to a Water Tank");
-    let y = H.conns.some((O) => O.stream === "vapor" && we(O.to)?.type === "vru" && we(O.from)?.type === "oiltank"), S = H.conns.some((O) => we(O.to)?.type === "xfer"), F = H.conns.some((O) => we(O.to)?.type === "lact"), X = { ht: g.some((O) => i(O, ["oiltank"]).length), water2: e(["watertank"]).length >= 2 || S, h2s: e(["h2s"]).length > 0, testsep: m.some((O) => i(O, ["oiltank", "ht"]).length), vru: v.some((O) => i(O, ["sales"]).length), vapor: y, lact: F, slots: !o.length }, Q = { ht: "Separator \u2192 Heater Treater \u2192 Oil Tank", water2: "Set a 2nd Water Tank, or a Transfer Pump fed from a water tank", h2s: "Build \u2192 H2S Monitor inside the fence", testsep: "Header \u2192 Test Separator \u2192 Oil Tank (or Treater)", vru: "Scrubber \u2192 VRT / VRU \u2192 Gas Sales Meter", vapor: "Connect: Oil Tank \u2192 VRU (vapor line)", lact: "Connect: Oil Tank \u2192 LACT Unit" }, D = Yn([...Ee?.reqs || [], ...s.some((O) => O.sour) ? ["h2s"] : []]).filter((O) => O !== "slots");
+    let y = H.conns.some((O) => O.stream === "vapor" && we(O.to)?.type === "vru" && we(O.from)?.type === "oiltank"), S = H.conns.some((O) => we(O.to)?.type === "xfer"), F = H.conns.some((O) => we(O.to)?.type === "lact"), X = { ht: g.some((O) => i(O, ["oiltank"]).length), water2: e(["watertank"]).length >= 2 || S, h2s: e(["h2s"]).length > 0, testsep: m.some((O) => i(O, ["oiltank", "ht"]).length) || s.some((O) => O.job === Ee?.id) && s.filter((O) => O.job === Ee?.id).every((O) => tsWell(O).ok && tsWell(O).site != null), vru: v.some((O) => i(O, ["sales"]).length), vapor: y, lact: F, slots: !o.length && !tsO.length }, Q = { ht: "Separator \u2192 Heater Treater \u2192 Oil Tank", water2: "Set a 2nd Water Tank, or a Transfer Pump fed from a water tank", h2s: "Build \u2192 H2S Monitor inside the fence", testsep: "Tie the wells in through a Test Site \u2014 its test separator takes the individual well tests", vru: "Scrubber \u2192 VRT / VRU \u2192 Gas Sales Meter", vapor: "Connect: Oil Tank \u2192 VRU (vapor line)", lact: "Connect: Oil Tank \u2192 LACT Unit" }, D = Yn([...Ee?.reqs || [], ...s.some((O) => O.sour) ? ["h2s"] : []]).filter((O) => O !== "slots");
     for (let O of D) t(X[O], `Operator: ${lh[O]}`, Q[O]);
     let B = n.every((O) => O.ok), W = { items: n, ok: B, vru: v.length > 0, sales: C.length > 0, flareOut: w.length > 0, gasPath: b, tankVapor: y, seps: f, tsep: m, hts: g, oilT: x, wt: U, scr: d, vrus: v, flares: w, xfer: S, lact: F, reqOK: X, headers: r };
     return W.rv = pv(W), W.tips = W.rv.risks.map((O) => ({ ok: O.level === "ok", label: O.text, warn: true, level: O.level })), W;
@@ -5222,20 +5399,28 @@ var kv = hp(() => {
     let t = ci(), e = 0, i = 0, s = 0, r = 0;
     for (let y of t) {
       let S = Ro(y) || 1;
-      e += y.bopd * S, i += y.bwpd * S, s += y.bopd * y.gor / 1e3 * S, r += Uh(y);
+      e += y.bopd * S, i += y.bwpd * S, s += y.bopd * y.gor / 1e3 * S;
     }
+    r = new Set(t.flatMap((y) => di(y) || [])).size * ns;
     let a = e + i, o = a ? i / a : 0, l = n.seps.reduce((y, S) => y + (S.type === "sep3" ? 4e3 : 2500), 0), c = l ? a / l : 0, h = n.hts.length * 3e3, u = h ? (e + i * (n.seps.some((y) => y.type === "sep2") ? 0.8 : 0.3)) / h : 0, f = H.equip.filter((y) => y.type === "oiltank").length, m = H.equip.filter((y) => y.type === "watertank").length, g = kn * f, x = kn * m, p = e ? g / e : 9, d = i ? x / i : 9, v = t.filter((y) => y.ftp > 500 && (di(y) || []).some((S) => H.mat[S] === 1)), _ = t.some((y) => y.sour) && !H.equip.some((y) => y.type === "h2s"), w = [], C = (y, S, F) => w.push({ key: y, level: S, text: F }), b = (y) => Math.round(y * 100) + "%";
     n.lact ? C("storage", "ok", "LACT selling oil to the crude line \u2014 storage is a buffer") : p < 0.75 ? C("storage", "high", `Oil storage ${g} bbl = ${p.toFixed(1)} days of production \u2014 high-level alarms; keep haul trucks coming`) : p < 1.25 ? C("storage", "med", `Oil storage ${g} bbl = ${p.toFixed(1)} days \u2014 tight; expect to call trucks`) : C("storage", "ok", `Oil storage ${g} bbl = ${p.toFixed(1)} days of production`), n.xfer ? C("water", "ok", "Transfer pump moving water to SWD") : d < 0.75 ? C("water", "high", `Water storage ${x} bbl = ${d.toFixed(1)} days \u2014 water trucks every few hours (or add a transfer pump)`) : d < 1.25 && C("water", "med", `Water storage ${x} bbl = ${d.toFixed(1)} days of water`), c > 1 ? C("sep", "high", `Separators overloaded (${b(c)} of capacity) \u2014 dump valves will hang up & carry over`) : c > 0.8 && C("sep", "med", `Separators at ${b(c)} of capacity \u2014 little headroom`), !n.hts.length && o > 0.55 ? C("bsw", "high", `No heater treater on ${b(o)} water cut \u2014 loads will fail BS&W (>1%)`) : u > 1 && C("bsw", "med", `Heater treater at ${b(u)} of capacity \u2014 BS&W creeping up`), v.length && C("poly", "high", `${v.map((y) => y.label).join(", ")} flowing ${Math.max(...v.map((y) => y.ftp))} psi on poly \u2014 leak risk; steel is the call`);
     let A = Math.round(s * Rh * Kn / 24);
     n.gasPath === "both" ? C("gaspath", "note", `Gas path: SALES + FLARE backup \u2014 ~${Math.round(s).toLocaleString()} mcf/d to the midstream meter (~${Le(A)} gas revenue over ${Kn / 24} days); flare only lights on upsets & curtailment`) : n.gasPath === "sales" ? C("gaspath", "note", `Gas path: SALES only \u2014 ~${Le(A)} gas revenue, but no flare backup: a midstream curtailment means choking back or shutting in`) : n.gasPath === "flare" && C("gaspath", s > 2e3 ? "med" : "note", `Gas path: FLARE only \u2014 cheaper to build, $0 gas revenue (leaving ~${Le(A)} on the table); routine flaring goes on the report as a permit note${s > 2e3 ? ` \xB7 ${Math.round(s).toLocaleString()} mcf/d is OVER the flare permit` : ""}`), n.gasPath !== "none" && !n.scr.length && C("scrubber", "med", "No gas scrubber \u2014 liquids carry over to the meter / flare when a dump valve hangs up");
     let U = fv(n, { sepLoad: c, nOil: f });
-    return n.odds = U, f && C("hatch", n.tankVapor ? "ok" : "med", `Thief-hatch alarm odds (${Kn / 24} days): ${b(U.hatch)}${n.tankVapor ? " \u2014 vapor line to the VRU" : ` \u2014 no vapor line (with one: ${b(U.hatchVapor)})`}`), _ && C("h2s", "high", "Sour gas on location with no H2S monitor"), r && C("gather", r / t.length > 1500 ? "med" : "ok", `Gathering: ${Math.round(r).toLocaleString()} ft of flow line, ~${Math.round(t.reduce((y, S) => y + (1 - (Ro(S) || 1)), 0) / Math.max(1, t.length) * 100)}% rate lost to backpressure`), { odds: U, oil: e, wat: i, gas: s, liq: a, wc: o, sepLoad: c, htLoad: u, oilCap: g, watCap: x, storDays: p, watDays: d, polyHP: v, sourNoMon: _, ft: r, risks: w, nOil: f, nWat: m };
+    return n.odds = U, f && C("hatch", n.tankVapor ? "ok" : "med", `Thief-hatch alarm odds (${Kn / 24} days): ${b(U.hatch)}${n.tankVapor ? " \u2014 vapor line to the VRU" : ` \u2014 no vapor line (with one: ${b(U.hatchVapor)})`}`), _ && C("h2s", "high", "Sour gas on location with no H2S monitor"), r && C("gather", r / t.length > 1500 ? "med" : "ok", `Gathering: ${Math.round(r).toLocaleString()} ft of flow & bulk line, ~${Math.round(t.reduce((y, S) => y + (1 - (Ro(S) || 1)), 0) / Math.max(1, t.length) * 100)}% rate lost to backpressure`), { odds: U, oil: e, wat: i, gas: s, liq: a, wc: o, sepLoad: c, htLoad: u, oilCap: g, watCap: x, storDays: p, watDays: d, polyHP: v, sourNoMon: _, ft: r, risks: w, nOil: f, nWat: m };
   }
   function mv() {
     let n = Ee ? Je.filter((o) => o.job === Ee.id) : [];
     if (!n.length) return 1;
-    let t = [...Sh, ...[...Dh()].map((o) => [o % 120, Math.floor(o / 120)])];
+    let tsI = tsInfo(), tsP = [...tsI.ports.keys()], hp = [...Dh()], tsX = 0, t = [...Sh, ...(tsP.length ? tsP : hp).map((o) => [o % 120, Math.floor(o / 120)])];
     if (!t.length) return 1;
+    if (tsP.length && hp.length) {
+      let o = new Set(Sh.map(([l, c]) => Zt(l, c)));
+      for (let l of Yn(n.map((c) => tsWell(c).site).filter((c) => c != null))) {
+        let c = tsBulk(l);
+        c && c.every((h) => o.has(h)) || (tsX += Math.min(...tsP.filter((h) => tsI.ports.get(h).includes(l)).map((h) => Math.min(...hp.map((u) => Math.abs(h % 120 - u % 120) + Math.abs(Math.floor(h / 120) - Math.floor(u / 120)))))));
+      }
+    }
     let e = n.map((o) => [o.stubI, o.stubJ]), i = e.map((o) => Math.min(...t.map((l) => Math.abs(o[0] - l[0]) + Math.abs(o[1] - l[1])))), s = /* @__PURE__ */ new Set(), r = 0, a = i.slice();
     for (; s.size < e.length; ) {
       let o = -1;
@@ -5243,7 +5428,7 @@ var kv = hp(() => {
       s.add(o), r += a[o];
       for (let l = 0; l < e.length; l++) s.has(l) || (a[l] = Math.min(a[l], Math.abs(e[l][0] - e[o][0]) + Math.abs(e[l][1] - e[o][1])));
     }
-    return Math.max(1, r);
+    return Math.max(1, r + tsX);
   }
   function gv(n) {
     let t = mv(), e = Math.min(1, t / Math.max(1, H.dug)), i = Ee?.budget || 1, s = H.cost <= i * 0.85 ? 1 : H.cost <= i ? 0.9 : Math.max(0, 0.9 - 2 * (H.cost - i) / i), r = n.sales ? (n.flareOut ? 1 : 0.9) * (n.vru && n.tankVapor ? 1 : 0.95) : n.rv.gas < 2e3 ? 0.7 : 0.35, a = 0.45 * e + 0.35 * s + 0.2 * r;
@@ -5392,7 +5577,7 @@ var kv = hp(() => {
         break;
       case "leak": {
         let o = t.w, l = (di(o) || []).some((c) => H.mat[c] === 1) && o.ftp > 500;
-        r = a(`Flow line leak \u2014 ${o.label}`, "Pumper spotted oil surfacing over the buried flow line. Well needs to be shut in at the tree.", l ? `Poly flow line on ${o.label} at ${o.ftp} psi FTP \u2014 should have been steel` : "Pinhole in a steel line (rare)", bv(o), 4, [{ label: "Shut in well & clamp it ($900, 2 h)", fn: () => (e.wellShut[o.id] = e.t + 2, Li(900, `Clamped flow line on ${o.label}`), true) }, { label: "Shut in, dig up & replace joint ($4,800, 6 h)", fn: () => (e.wellShut[o.id] = e.t + 6, Li(4800, `Replaced flow line joint on ${o.label}`), true) }], { w: o });
+        r = a(`Flow line leak \u2014 ${o.label}`, "Pumper spotted oil surfacing over the buried flow line. Well needs to be shut in at the tree.", l ? `Poly flow line on ${o.label} at ${o.ftp} psi FTP \u2014 should have been steel` : (di(o) || []).some((c) => H.mat[c] === 3) ? "Weeping end fitting at the steel-to-flexpipe transition (rare)" : "Pinhole in a steel line (rare)", bv(o), 4, [{ label: "Shut in well & clamp it ($900, 2 h)", fn: () => (e.wellShut[o.id] = e.t + 2, Li(900, `Clamped flow line on ${o.label}`), true) }, { label: "Shut in, dig up & replace joint ($4,800, 6 h)", fn: () => (e.wellShut[o.id] = e.t + 6, Li(4800, `Replaced flow line joint on ${o.label}`), true) }], { w: o });
         break;
       }
       case "hatch":
@@ -5816,7 +6001,7 @@ var kv = hp(() => {
     return yt ? yt.events.map((n) => ({ id: n.id, type: n.type, title: n.title, cause: n.cause, opts: n.opts.map((t) => t.label) })) : [];
   }, get report() {
     return ep;
-  }, setTool: ss, undo: vl, commission: Jf, validate: () => Fh(), acceptJob: ip, backToBoard: zh, endOps: Bh, resolveEvent: Qf, forceEvent: (n, t) => yt && Zn(n, t != null ? { w: Je[t] } : {}), opsSpeed: (n, t = true) => {
+  }, wellNet: (n) => tsWell(Je[n]), siteBulk: (n) => tsBulk(n), refresh: Rn, setTool: ss, undo: vl, commission: Jf, validate: () => Fh(), acceptJob: ip, backToBoard: zh, endOps: Bh, resolveEvent: Qf, forceEvent: (n, t) => yt && Zn(n, t != null ? { w: Je[t] } : {}), opsSpeed: (n, t = true) => {
     yt && (yt.speed = n, tp = t);
   }, opsAdvance: (n) => {
     if (!yt) return;
