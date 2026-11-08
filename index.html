@@ -5567,10 +5567,10 @@ var kv = hp(() => {
     let e = yt, i = e.v, s = e.rv, r, a = (o, l, c, h, u, f, m = {}) => ({ id: e.nextEv++, type: n, title: o, text: l, cause: c, anchor: h, limit: u, opts: f, t0: e.t, ...m });
     switch (n) {
       case "hilevel":
-        r = a("High level \u2014 oil tanks 90%", "Stock tanks are nearly full. Get a haul truck out here or shut the wells in.", i.lact ? "LACT can't keep up (or is diverting off-spec oil)" : `${s.nOil} oil tank(s) = ${s.storDays.toFixed(1)} days of storage${e.standing.oil ? "" : " \xB7 no standing haul order"}`, Ci(["oiltank"]), 0, [{ label: "Call oil hauler ($350)", fn: () => (Po("oil"), true) }, { label: "Shut in wells 4 h", fn: () => (hl(4, "high level"), true) }]);
+        r = a("High level \u2014 oil tanks 90%", "Stock tanks are nearly full. Get a haul truck out here or shut the wells in.", i.lact ? "LACT can't keep up (or is diverting off-spec oil)" : `${s.nOil} oil tank(s) = ${s.storDays.toFixed(1)} days of storage${e.standing.oil ? "" : " \xB7 no standing haul order"}`, Ci(["oiltank"]), 0, [{ label: "Call oil hauler ($350)", fn: () => Po("oil") || "fail" }, { label: "Shut in wells 4 h", fn: () => (hl(4, "high level"), true) }]);
         break;
       case "hiwater":
-        r = a("High level \u2014 water tanks 90%", "Produced-water tanks are nearly full. Call a water truck to the SWD or shut in.", i.xfer ? "Transfer pump can't keep up" : `${s.nWat} water tank(s) = ${s.watDays.toFixed(1)} days of water`, Ci(["watertank"]), 0, [{ label: "Call water truck ($280)", fn: () => (Po("water"), true) }, { label: "Shut in wells 4 h", fn: () => (hl(4, "high water"), true) }]);
+        r = a("High level \u2014 water tanks 90%", "Produced-water tanks are nearly full. Call a water truck to the SWD or shut in.", i.xfer ? "Transfer pump can't keep up" : `${s.nWat} water tank(s) = ${s.watDays.toFixed(1)} days of water`, Ci(["watertank"]), 0, [{ label: "Call water truck ($280)", fn: () => Po("water") || "fail" }, { label: "Shut in wells 4 h", fn: () => (hl(4, "high water"), true) }]);
         break;
       case "dump":
         e.dumpStuck = true, r = a("Dump valve stuck \u2014 separator level high", "The water dump on the separator is hung closed. Level is climbing toward the gas outlet \u2014 carry-over to the flare if it goes.", s.sepLoad > 0.8 ? `Separators at ${xl(s.sepLoad)} of capacity \u2014 undersized vessels cycle the dump hard` : "Sand / paraffin on the dump valve seat", Ci(["sep3", "sep2"]), 3, [{ label: "Work the dump valve by hand (free)", fn: () => e.rng() < 0.65 ? (e.dumpStuck = false, cn("Worked the dump loose."), true) : (qt("Still hung up \u2014 try another fix.", "warn"), "fail") }, { label: "Swap the float / trim ($850)", fn: () => (Li(850, "Replaced dump float & trim"), e.dumpStuck = false, true) }, { label: "Shut in 2 h & clean it", fn: () => (hl(2, "dump valve"), e.dumpStuck = false, true) }]);
@@ -5645,14 +5645,38 @@ var kv = hp(() => {
     return t.position.copy(n), t.scale.setScalar(3.2), t.renderOrder = 10, Xt.add(t), t;
   }
   var bf = ae(0, (Ri.j0 + Ri.j1) / 2).z, Sf = ae((yr.i0 + yr.i1) / 2, 0).x, Tv = ae(62, 64).z;
+  var truckCap = 5;
+  function truckPath(k) {
+    let e = Av(), s = 0;
+    for (let a = 1; a < e.length; a++) s += e[a].distanceTo(e[a - 1]);
+    let i = Math.max(0, s - k * 13), r = [e[0].clone()], o = 0;
+    for (let a = 1; a < e.length; a++) {
+      let l = e[a].distanceTo(e[a - 1]);
+      if (o + l >= i) {
+        r.push(e[a - 1].clone().lerp(e[a], l ? (i - o) / l : 0));
+        break;
+      }
+      r.push(e[a].clone()), o += l;
+    }
+    return r.length < 2 && r.push(r[0].clone()), r;
+  }
+  function truckSummary(t) {
+    return ["oil", "water"].map((n) => {
+      let e = t.trucks.filter((s) => s.kind === n);
+      if (!e.length) return "";
+      let i = e.filter((s) => s.state === "enroute"), r = e.filter((s) => s.state === "loading").length, a = e.filter((s) => s.state === "leaving").length;
+      return `\u{1F69B} ${n === "oil" ? "Oil" : "Water"} trucks <b>${e.length}/${truckCap}</b> (${[i.length ? `${i.length} en route, next in ${Math.max(0, Math.min(...i.map((s) => s.eta - (t.t - s.t0)))).toFixed(1)} h` : "", r ? `${r} loading` : "", a ? `${a} leaving` : ""].filter(Boolean).join(", ")})`;
+    }).filter(Boolean).join(" \xB7 ");
+  }
   function Po(n, t = false) {
     let e = yt;
-    if (e.trucks.some((s) => s.kind === n && s.state === "enroute")) {
-      t || qt(`A ${n} truck is already on the way.`);
-      return;
+    if (e.trucks.filter((s) => s.kind === n).length >= truckCap) {
+      t || qt(`All ${truckCap} ${n} trucks are already running — wait for one to load out and leave.`, "warn");
+      return false;
     }
-    let i = df(n);
-    Xt.add(i.group || i), e.trucks.push({ kind: n, state: "enroute", t0: e.t, eta: 1.5, obj: i.group || i, load: 0 }), Li((n === "oil" ? 350 : 280) + (t ? 150 : 0), `${n === "oil" ? "Crude hauler" : "Water truck"} dispatched${t ? " (standing order)" : ""}`), Ah(n === "oil" ? "hilevel" : "hiwater");
+    let i = df(n), k = 0;
+    for (; e.trucks.some((s) => s.slot === k); ) k++;
+    return Xt.add(i.group || i), e.trucks.push({ kind: n, state: "enroute", t0: e.t, eta: 1.5, obj: i.group || i, load: 0, slot: k, path: truckPath(k) }), Li((n === "oil" ? 350 : 280) + (t ? 150 : 0), `${n === "oil" ? "Crude hauler" : "Water truck"} dispatched${t ? " (standing order)" : ""}`), Ah(n === "oil" ? "hilevel" : "hiwater"), true;
   }
   var Av = () => [new R(330, 0, bf + 1.2), new R(Sf + 1.2, 0, bf + 1.2), new R(Sf + 1.2, 0, Tv)];
   function Ef(n, t, e) {
@@ -5669,7 +5693,7 @@ var kv = hp(() => {
     let t = yt, e = Av();
     for (let i of [...t.trucks]) {
       let s = t.t - i.t0;
-      i.state === "enroute" ? (Ef(i.obj, e, s / i.eta), s >= i.eta && (i.state = "loading", i.t0 = t.t, Pv(i))) : i.state === "loading" ? s >= 0.75 && (i.state = "leaving", i.t0 = t.t) : (Ef(i.obj, [...e].reverse(), s / 0.8), s >= 0.8 && (Xt.remove(i.obj), t.trucks = t.trucks.filter((r) => r !== i)));
+      i.state === "enroute" ? (Ef(i.obj, i.path || e, s / i.eta), s >= i.eta && (i.state = "loading", i.t0 = t.t, Pv(i))) : i.state === "loading" ? s >= 0.75 && (i.state = "leaving", i.t0 = t.t) : (Ef(i.obj, [...i.path || e].reverse(), s / 0.8), s >= 0.8 && (Xt.remove(i.obj), t.trucks = t.trucks.filter((r) => r !== i)));
     }
   }
   function Cv(n) {
@@ -5685,11 +5709,13 @@ var kv = hp(() => {
         return;
       }
       let i = Math.min(200, e);
+      if (i < 1) return cn("Crude hauler <b>dry run</b> — tanks are at the heel, nothing to load (call-out still billed).");
       t.oil -= i, t.sold += i;
       let s = { no: 4400 + t.tickets.length + 1 + Me.runs * 37, time: kh(), bbl: Math.round(i), gauge: Cv(t.oil / Math.max(1, t.oilCap / kn)), bsw: t.oilBsw.toFixed(2), api: (41.5 + t.rng() * 1.5).toFixed(1), temp: Math.round(78 + t.rng() * 12) };
       t.tickets.unshift(s), cn(`Run ticket #${s.no}: ${s.bbl} bbl, BS&W ${s.bsw}%, ${s.api}\xB0 API, ${s.temp}\xB0F`);
     } else {
       let e = Math.min(130, Math.max(0, t.wat - 0.05 * t.watCap));
+      if (e < 1) return cn("Water truck <b>dry run</b> — water tanks are at the heel, nothing to haul (call-out still billed).");
       t.wat -= e, t.hauledW += e, cn(`Water truck hauled ${Math.round(e)} bbl to SWD.`);
     }
   }
@@ -5826,7 +5852,7 @@ var kv = hp(() => {
    <div class="nums"><div><b>${Math.round(t.rate.oil).toLocaleString()}</b>BOPD</div><div><b>${Math.round(t.rate.wat).toLocaleString()}</b>BWPD</div><div><b class="ok">${Math.round(t.rate.sales).toLocaleString()}</b>mcf/d sales</div><div><b class="${t.rate.flare > 2e3 || t.rate.vent > 0 ? "bad" : ""}">${Math.round(t.rate.flare + (t.rate.vent || 0)).toLocaleString()}</b>mcf/d ${t.rate.vent > 0 ? "VENTING" : "flare"}</div></div>
    <div class="nums"><div><b>${Math.round(t.sold).toLocaleString()}</b>bbl sold</div><div><b>${(t.potential ? 100 * t.lost / t.potential : 0).toFixed(1)}%</b>downtime</div><div><b>${t.incidents}</b>incidents</div><div><b>${Le(t.opex)}</b>opex</div></div>
    ${t.t < t.shutUntil ? `<div class="banner">WELLS SHUT IN \xB7 ${(t.shutUntil - t.t).toFixed(1)} h</div>` : t.t < t.chokeUntil ? `<div class="banner warn">CHOKED BACK ${Math.round((1 - t.chokeFrac) * 100)}% \xB7 ${(t.chokeUntil - t.t).toFixed(1)} h</div>` : ""}
-   ${t.trucks.length ? `<div class="dim">${t.trucks.map((a) => `\u{1F69B} ${a.kind} truck ${a.state === "enroute" ? `ETA ${Math.max(0, a.eta - (t.t - a.t0)).toFixed(1)} h` : a.state}`).join(" \xB7 ")}</div>` : ""}`;
+   ${t.trucks.length ? `<div class="dim">${truckSummary(t)}</div>` : ""}`;
     let s = t.events.map((a) => a.id + ":" + a.opts.length).join(",") + "|" + t.log.length + (t.log[0] || "") + t.tickets.length;
     (n || s !== wf) && (wf = s, Ct("#opsAlarms").innerHTML = (t.events.length ? t.events.map((a) => `<div class="alarm" data-ev="${a.id}"><b>\u26A0 ${a.title}</b><small>${a.anchor.name}${a.limit ? ` \xB7 escalates in <span class="tl" data-ev="${a.id}"></span>` : ""}</small><button data-go="${a.id}">Respond</button></div>`).join("") : '<div class="dim">No alarms. Keep the tanks hauled.</div>') + (t.tickets[0] ? `<div class="ticket"><b>Run ticket #${t.tickets[0].no}</b> ${t.tickets[0].time}<br>${t.tickets[0].bbl} bbl \xB7 gauge ${t.tickets[0].gauge} \xB7 BS&amp;W ${t.tickets[0].bsw}% \xB7 ${t.tickets[0].api}\xB0 API \xB7 ${t.tickets[0].temp}\xB0F</div>` : "") + `<div class="oplog">${t.log.slice(0, 5).map((a) => `<div>${a}</div>`).join("")}</div>`, Ct("#opsAlarms").querySelectorAll("[data-go]").forEach((a) => a.onclick = () => {
       let o = t.events.find((l) => l.id === +a.dataset.go);
@@ -5834,7 +5860,7 @@ var kv = hp(() => {
     })), Ct("#opsAlarms").querySelectorAll(".tl").forEach((a) => {
       let o = t.events.find((l) => l.id === +a.dataset.ev);
       o && (a.textContent = Math.max(0, o.limit - (t.t - o.t0)).toFixed(1) + " h");
-    }), document.querySelectorAll("[data-spd]").forEach((a) => a.classList.toggle("active", +a.dataset.spd === t.speed)), Ct("#soOil").checked = t.standing.oil, Ct("#soWat").checked = t.standing.water;
+    }), document.querySelectorAll("[data-spd]").forEach((a) => a.classList.toggle("active", +a.dataset.spd === t.speed)), Ct("#soOil").checked = t.standing.oil, Ct("#soWat").checked = t.standing.water, Ct("#callOil").disabled = t.trucks.filter((a) => a.kind === "oil").length >= truckCap, Ct("#callWat").disabled = t.trucks.filter((a) => a.kind === "water").length >= truckCap;
     let r = Ct("#act");
     if (r.style.display === "block") {
       let a = t.events.find((l) => l.id === +r.dataset.ev), o = r.querySelector(".timer");
