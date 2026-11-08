@@ -4407,7 +4407,7 @@ var kv = hp(() => {
   uh();
   mh();
   xf();
-  var Cs = -240 / 2, To = -180 / 2, ns = 6.56, Kn = 72, Rh = 2, ai = 2, kn = 1e3, Py = 16, Ii = { dig: 165, poly: 150, steel: 530, flex: 290, fill: 55, conn: 36e3 }, Ir = { dig: 0.12, poly: 0.05, steel: 0.2, flex: 0.07, fill: 0.04, conn: 2 }, tsSteelTiles = 14, Ct = (n) => document.querySelector(n), Le = (n) => "$" + Math.round(n).toLocaleString("en-US"), fi = new co({ antialias: true, preserveDrawingBuffer: true });
+  var Cs = -240 / 2, To = -180 / 2, ns = 6.56, Kn = 72, Rh = 1.57, oilPx = 90.83, hhPx = 3, pxDate = "Nov 6, 2026", ai = 2, kn = 1e3, Py = 16, Ii = { dig: 165, poly: 150, steel: 530, flex: 290, fill: 55, conn: 36e3 }, Ir = { dig: 0.12, poly: 0.05, steel: 0.2, flex: 0.07, fill: 0.04, conn: 2 }, tsSteelTiles = 14, Ct = (n) => document.querySelector(n), Le = (n) => "$" + Math.round(n).toLocaleString("en-US"), fi = new co({ antialias: true, preserveDrawingBuffer: true });
   fi.setPixelRatio(Math.min(devicePixelRatio, 2));
   fi.setSize(innerWidth, innerHeight);
   fi.shadowMap.enabled = true;
@@ -5714,7 +5714,7 @@ var kv = hp(() => {
       if (i < 1) return cn("Crude hauler <b>dry run</b> — tanks are at the heel, nothing to load (call-out still billed).");
       t.oil -= i, t.sold += i;
       let s = { no: 4400 + t.tickets.length + 1 + Me.runs * 37, time: kh(), bbl: Math.round(i), gauge: Cv(t.oil / Math.max(1, t.oilCap / kn)), bsw: t.oilBsw.toFixed(2), api: (41.5 + t.rng() * 1.5).toFixed(1), temp: Math.round(78 + t.rng() * 12) };
-      t.tickets.unshift(s), cn(`Run ticket #${s.no}: ${s.bbl} bbl, BS&W ${s.bsw}%, ${s.api}\xB0 API, ${s.temp}\xB0F`);
+      t.tickets.unshift(s), cn(`Run ticket #${s.no}: ${s.bbl} bbl (≈${Le(s.bbl * oilPx)} at WTI), BS&W ${s.bsw}%, ${s.api}\xB0 API, ${s.temp}\xB0F`);
     } else {
       let e = Math.min(130, Math.max(0, t.wat - 0.05 * t.watCap));
       if (e < 1) return cn("Water truck <b>dry run</b> — water tanks are at the heel, nothing to haul (call-out still billed).");
@@ -5773,13 +5773,13 @@ var kv = hp(() => {
     Ct("#report").innerHTML = `<h2>${Ee.title} \u2014 Report card</h2><div class="sub">${xr} \xB7 ${xo} \xB7 ${Kn / 24} days on production</div>
   <div class="gradebox"><div class="grade g${n.grade[0]}">${n.grade}</div><div><b>${Math.round(n.overall)}</b>/100<br><span class="dim">${Ee.repeat ? "ops only" : `build ${Math.round(n.buildScore)} \xB7 ops ${Math.round(n.opsScore)}`}</span></div></div>
   <div class="cols"><table>
-   ${i("Oil sold", `${Math.round(t.sold).toLocaleString()} bbl`)}${i("Gas sold / flared", `${Math.round(t.gasSold).toLocaleString()} / ${Math.round(t.flared).toLocaleString()} mcf${t.vented > 1 ? ` \xB7 vented ${Math.round(t.vented).toLocaleString()}` : ""}`, t.v.gasPath === "flare" || t.vented > 1 ? "bad" : "ok")}${i("Gas path", { both: "Sales meter + flare backup", sales: "Sales meter only", flare: "Flare only" }[t.v.gasPath] || "\u2014")}
+   ${i("Oil sold", `${Math.round(t.sold).toLocaleString()} bbl \xB7 ${Le(t.sold * oilPx)}`)}${i("Oil deferred by downtime", t.lost >= 1 ? `${Math.round(t.lost).toLocaleString()} bbl \xB7 ${Le(t.lost * oilPx)}` : "—", t.lost >= 1 ? "bad" : "ok")}${i("Gas sold / flared", `${Math.round(t.gasSold).toLocaleString()} / ${Math.round(t.flared).toLocaleString()} mcf${t.vented > 1 ? ` \xB7 vented ${Math.round(t.vented).toLocaleString()}` : ""}`, t.v.gasPath === "flare" || t.vented > 1 ? "bad" : "ok")}${i("Gas path", { both: "Sales meter + flare backup", sales: "Sales meter only", flare: "Flare only" }[t.v.gasPath] || "\u2014")}
    ${i("Water hauled / SWD", `${Math.round(t.hauledW + t.swd).toLocaleString()} bbl`)}${i("Downtime", `${n.down.toFixed(1)}%`, n.down > 5 ? "bad" : "ok")}
    ${i("Incidents / spills", `${t.incidents} / ${t.spills}`, t.incidents ? "bad" : "ok")}${i("Rejected loads \xB7 write-ups", `${t.rejects} \xB7 ${t.writeups}`, t.rejects + t.writeups ? "bad" : "ok")}
   </table><table>
    ${i("Build cost vs AFE", `${Le(t.buildCost)} / ${Le(n.B)}`, n.over ? "bad" : "ok")}${i("Build grade", `${e.grade} <span class="dim">(ditch ${Math.round(e.trenchEff * 100)} \xB7 cost ${Math.round(e.costEff * 100)} \xB7 gas ${Math.round(e.gas * 100)})</span>`)}
    ${i("Contract pay", Le(Ee.pay))}${i("Overrun (25% back-charged)", n.over ? "\u2212" + Le(n.over * 0.25) : "\u2014", n.over ? "bad" : "")}
-   ${i("Opex, repairs & fines", "\u2212" + Le(t.opex), "bad")}${i("Uptime bonus (\u226595%)", n.bonus ? "+" + Le(n.bonus) : "\u2014", n.bonus ? "ok" : "")}${i(`Gas sales credit ($${Rh.toFixed(2)}/mcf)`, n.gasRev ? "+" + Le(n.gasRev) : "$0 (flared)", n.gasRev ? "ok" : "bad")}
+   ${i("Opex, repairs & fines", "\u2212" + Le(t.opex), "bad")}${i("Uptime bonus (\u226595%)", n.bonus ? "+" + Le(n.bonus) : "\u2014", n.bonus ? "ok" : "")}${i(`Gas sales credit (Waha $${Rh.toFixed(2)}/mcf)`, n.gasRev ? "+" + Le(n.gasRev) : "$0 (flared)", n.gasRev ? "ok" : "bad")}
    <tr class="tot"><td>Paid</td><td class="${n.pay >= 0 ? "ok" : "bad"}">${Le(n.pay)}</td></tr><tr class="tot"><td>Reputation</td><td>${n.rep >= 0 ? "+" : ""}${n.rep} \u2192 ${Me.rep}</td></tr>
   </table></div>
   ${n.B ? `<div class="afe"><b>AFE vs actual \u2014 facilities</b><table>
@@ -5805,7 +5805,7 @@ var kv = hp(() => {
     return n.repeat ? Me.done.j1 ? "open" : "locked" : Me.done[n.id] ? "done" : n.id !== "j1" && !Me.done.j1 ? "locked" : Me.rep >= n.rep ? "open" : "locked";
   }
   function Hh() {
-    Ct("#board").innerHTML = `<div class="bhead"><div><h2>Job board</h2><div class="dim">${xr} \xB7 ${xo} \xB7 Permian Basin</div></div>
+    Ct("#board").innerHTML = `<div class="bhead"><div><h2>Job board</h2><div class="dim">${xr} \xB7 ${xo} \xB7 Permian Basin</div><div class="dim">WTI <b>$${oilPx.toFixed(2)}</b>/bbl \xB7 Waha gas <b>$${Rh.toFixed(2)}</b>/mcf (Henry Hub $${hhPx.toFixed(2)}) \xB7 prices as of ${pxDate}</div></div>
     <div class="career"><span>Rep <b>${Me.rep}</b></span><span>Cash <b>${Le(Me.cash)}</b></span><span>Jobs <b>${Object.keys(Me.done).length}</b></span><button id="resetSave" class="sec" title="Double-click to wipe progress">Reset</button></div></div>
     <div class="cards">${Qa.map((n) => {
       let t = np(n), e = Me.done[n.id];
@@ -5861,6 +5861,7 @@ var kv = hp(() => {
    ${t.v.hts.length ? `<div class="g"><span>Treater</span>${ul(t.htT / 180, t.htT < 120 ? "hot" : "warm")}<em>${Math.round(t.htT)}\xB0F ${t.pilotOut ? '<b class="bad">PILOT OUT</b>' : ""}</em></div>` : ""}
    <div class="nums"><div><b>${Math.round(t.rate.oil).toLocaleString()}</b>BOPD</div><div><b>${Math.round(t.rate.wat).toLocaleString()}</b>BWPD</div><div><b class="ok">${Math.round(t.rate.sales).toLocaleString()}</b>mcf/d sales</div><div><b class="${t.rate.flare > 2e3 || t.rate.vent > 0 ? "bad" : ""}">${Math.round(t.rate.flare + (t.rate.vent || 0)).toLocaleString()}</b>mcf/d ${t.rate.vent > 0 ? "VENTING" : "flare"}</div></div>
    <div class="nums"><div><b>${Math.round(t.sold).toLocaleString()}</b>bbl sold</div><div><b>${(t.potential ? 100 * t.lost / t.potential : 0).toFixed(1)}%</b>downtime</div><div><b>${t.incidents}</b>incidents</div><div><b>${Le(t.opex)}</b>opex</div></div>
+   <div class="dim">Production value ≈ <b>${Le(t.rate.oil * oilPx + t.rate.sales * Rh)}</b>/day \xB7 WTI $${oilPx.toFixed(2)} \xB7 Waha $${Rh.toFixed(2)}/mcf</div>
    ${t.t < t.shutUntil ? `<div class="banner">WELLS SHUT IN \xB7 ${(t.shutUntil - t.t).toFixed(1)} h</div>` : t.t < t.chokeUntil ? `<div class="banner warn">CHOKED BACK ${Math.round((1 - t.chokeFrac) * 100)}% \xB7 ${(t.chokeUntil - t.t).toFixed(1)} h</div>` : ""}
    ${t.trucks.length ? `<div class="dim">${truckSummary(t)}</div>` : ""}`;
     let s = t.events.map((a) => a.id + ":" + a.opts.length).join(",") + "|" + t.log.length + (t.log[0] || "") + t.tickets.length;

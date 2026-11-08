@@ -25,6 +25,9 @@ Costs are scaled so a first-phase CTB lands in the low millions, as real ones do
 | Welded steel flow line / flexpipe | ~$81/ft / ~$44/ft (flex 45% under steel) |
 | Trenching / backfill | ~$25/ft / ~$8/ft |
 | Crude haul / water haul | $850 / $520 per load |
+| **Prices (as of Nov 6, 2026)** | **WTI $90.83/bbl · Waha gas $1.57/mcf** (Henry Hub $3.00) |
+
+The battery's gas is priced at **Waha**, the Permian hub, not at Henry Hub. Waha averaged about $4 under Henry Hub from Oct 2025 to Sep 2026 and settled below zero on 134 of 245 trading days. Gas sold through the sales meter is credited to your pay at Waha. Oil is valued at WTI on run tickets, on the ops panel (production value per day) and on the report (oil sold, and oil deferred by downtime). It isn't added to your pay, because the operator owns the oil and you're the contractor. To update prices, change `oilPx`, `Rh` (Waha), `hhPx` and `pxDate` next to the other economic constants in `index.html`.
 
 Job budgets are AFEs. The report card ends with an **AFE vs actual** facilities sheet: equipment, test sites, process piping, and trench and lines, plus the variance and the facility cost per new well. Cost overruns are back-charged at 25%. During operations you can run up to **5 oil and 5 water trucks** at once.
 
