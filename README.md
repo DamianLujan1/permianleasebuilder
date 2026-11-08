@@ -11,6 +11,23 @@ You take tickets off a job board. Each job ties a lease's wells into one central
 
 A well counts as tied in only when its line ends at a test site that has its own bulk line to the CTB. If a pad ditch touches the bulk-line ditch, the wells would bypass the test site. The checklist flags that, and Lay Pipe refuses to string a bypass. Saves made before test sites existed keep their old direct tie-ins. The work has to stay inside the job's budget and route around obstacles such as caliche pits, power poles, pipeline right-of-way and lease roads.
 
+## Economics (2026 Permian, installed costs)
+
+Costs are scaled so a first-phase CTB lands in the low millions, as real ones do. Pioneer's 2015 SEC filing put a CTB plus saltwater disposal for 60 wells at about $25M, with roughly $10M of that for the first six wells. A typical J1 build now comes to about **$2.6M** against a **$3.3M AFE**, and the full five-job build-out comes to about **$8M**. Individual vessel prices are estimates, not vendor quotes.
+
+| Item | Cost |
+| --- | --- |
+| Test site (6-well manifold + test separator) | $950,000 |
+| Heater treater / 3-phase separator | $425,000 / $345,000 |
+| VRT/VRU · LACT · gas sales meter · flare | $640,000 · $485,000 · $310,000 · $265,000 |
+| Oil tank / water tank (1000 bbl) | $165,000 / $140,000 |
+| Process line between vessels | $36,000 each |
+| Welded steel flow line / flexpipe | ~$81/ft / ~$44/ft (flex 45% under steel) |
+| Trenching / backfill | ~$25/ft / ~$8/ft |
+| Crude haul / water haul | $850 / $520 per load |
+
+Job budgets are AFEs. The report card ends with an **AFE vs actual** facilities sheet: equipment, test sites, process piping, and trench and lines, plus the variance and the facility cost per new well. Cost overruns are back-charged at 25%. During operations you can run up to **5 oil and 5 water trucks** at once.
+
 ## Running it
 
 The whole game is one self-contained `index.html`. three.js is bundled inline, so it needs no build step, dependencies or network requests.
