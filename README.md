@@ -31,4 +31,8 @@ The whole game is one self-contained `index.html`. three.js is bundled inline, s
 
 ## Provenance
 
-`index.html` was pulled from the Vercel project `oilfield-battery-builder`, production deployment `dpl_DXmSSds7NRkLmyBh5CHqFHSVNDh2` (the latest of 12 deployments). The file is byte-identical to the deployed source: SHA-1 `09440a78d78ffc14e991ea7c6dd010d71c34046d`, matching Vercel's content hash for that file. The deployment held this one file only. The JavaScript in it is already minified, and no unminified source was part of the deployment.
+`index.html` was pulled from the Vercel project `oilfield-battery-builder`, production deployment `dpl_DXmSSds7NRkLmyBh5CHqFHSVNDh2` (the latest of 12 deployments). As imported, the file was byte-identical to the deployed source: SHA-1 `09440a78d78ffc14e991ea7c6dd010d71c34046d`, matching Vercel's content hash for that file. The deployment held this one file only, with all of its JavaScript minified, and no unminified source was part of it.
+
+## Code layout
+
+Everything lives in one `<script>`: an esbuild bundle of three.js, its OrbitControls, and the game. The three.js part stays minified. The game logic starts at `function Mr(n, t)` (tile terrain lookup) and is pretty-printed so it can be edited and reviewed. Local variable names are still the short ones the minifier picked. That reformat changed no behavior: running `esbuild --minify-whitespace` on the old and new scripts gives identical output.
